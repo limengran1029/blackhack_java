@@ -5,6 +5,7 @@ public class BlackHack {
 		System.out.println("Mathias");
 		System.out.println("Sebbe");
 		System.out.println("Mathias");
+		System.out.println("Black jack is great");
 	}
 
 }
