@@ -15,14 +15,17 @@
 - Spelar klass ( om vi ska ha fler spelare )
 
 # MENYER
+
 1. Login
 2. Register 
 
-==Login===
+
 Username:
 Password:
 
 # Game logic
+
+
 ==Rounds==
 Hello name you have 2234 cred.
 1. Add credits
