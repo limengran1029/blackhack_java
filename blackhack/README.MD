@@ -1,5 +1,4 @@
-# DB structure
-## Table Users
+# DB structure table user
 - id
 - namn
 - pass
