@@ -12,6 +12,8 @@ public class BlackHack {
 		String choice = inp.next();
 		String username;
 		String password;
+		int fullclearence = 0; // Sätts till 1 eller 0 returneras från metod i databaser.
+		int accepted = 0; // Sätts till 1 eller 0 returneras från en metod i databaser.
 		
 		while (true) 
 		{
@@ -22,13 +24,26 @@ public class BlackHack {
 					System.out.println("Skriv in ett användarnamn:");
 					username = inp.next();
 					// Kolla om användarnamn redan är taget
-					int accepted = 0; // Sätts till 1 eller 0 returneras från en metod i databaser.
 					if (accepted == 1)
 					{
 						System.out.println("Skriv in ett lösenord");
 						password = inp.next();
+						// kolla om lösenord stämmer med användare
+						if (fullclearence == 1)
+						{
+							System.out.println("Välkommen + här skriver vi in namn taget från användare.");
+							break;
+						}
+						else
+						{
+							System.out.println("Fel lösenord!");
+							break;
+						}
 					}
 					else
+					{
+						System.out.println("Fel användarnamn!");
+					}
 				}
 				
 				
