@@ -7,8 +7,9 @@ public class BlackHack {
 		System.out.println("Mathias");
 		
 		for (i = 0; i < 10; i++) {
-			System.out.println("det här med git...");
+			System.out.println("det hï¿½r med git...");
 		}
+		System.out.println("Black jack is great");
 	}
 
 }
