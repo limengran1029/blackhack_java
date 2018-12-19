@@ -1,10 +1,6 @@
 package blackhack;
 
-<<<<<<< HEAD
-import java.util.ArrayDeque;
-=======
 import java.util.Scanner;
->>>>>>> branch 'master' of git@github.com:sebastianedholme/blackhack_java.git
 
 public class BlackHack {
 
