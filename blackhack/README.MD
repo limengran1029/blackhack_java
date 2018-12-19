@@ -10,9 +10,15 @@
 
 # Classes
 - BlackHack main klass
+- - Här lever menyn och sånt som printas
 - DB klass
+- - DB klassen ska ta emot ett player objekt för att spara ned information till databas
 - Deck klass
-- Spelar klass ( om vi ska ha fler spelare )
+- - Deck klassen innehåller alla kort
+- Card klassen
+- - Hämtar kort från deck klassen.
+- Player klass
+
 
 # MENYER
 
