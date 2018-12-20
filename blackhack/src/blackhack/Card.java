@@ -1,8 +1,7 @@
 package blackhack;
 
 public class Card {
-<<<<<<< HEAD
-=======
+
 	private String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
 	private int[] ranks = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 	private String suit;
@@ -37,5 +36,4 @@ public class Card {
 		return "Card >" + suit + " | " + rank;
 	}
 	
->>>>>>> refs/remotes/origin/card_logic
 }
