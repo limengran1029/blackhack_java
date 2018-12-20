@@ -24,15 +24,12 @@ public class Deck {
 		deck = new ArrayDeque<Card>(tDeck);
 	}
 	
-	public ArrayDeque<Card> getDeck() {
-		return deck;
+	public Card drawCard() {
+		return deck.pop();
 	}
 	
 	public static void main(String args[]) {
 		Deck d = new Deck();
-		System.out.println(d.getDeck().pop());
-		System.out.println(d.getDeck().pop());
-		System.out.println(d.getDeck().pop());
-		System.out.println(d.getDeck().size());
+		System.out.println(d.drawCard());
 	}
 }
