@@ -10,7 +10,8 @@ public class Deck {
 	public Deck() {
 		ArrayList<Card> tDeck = new ArrayList<Card>();
 
-		for (int i = 1; i < 5; i++) {
+		// 4 represents num of decks in the whole deck stack
+		for (int i = 1; i <= 4; i++) {
 			for (String suit: new Card().getSuit()) 
 			{
 				for (int rank: new Card().getRank()) 
@@ -29,5 +30,9 @@ public class Deck {
 	
 	public static void main(String args[]) {
 		Deck d = new Deck();
+		System.out.println(d.getDeck().pop());
+		System.out.println(d.getDeck().pop());
+		System.out.println(d.getDeck().pop());
+		System.out.println(d.getDeck().size());
 	}
 }
