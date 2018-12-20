@@ -18,13 +18,13 @@ public class DBConnector {
 		ResultSet r = null;
 		try (Connection connect = DriverManager.getConnection(conn);){
 			s = connect.createStatement();
-			r = s.executeQuery("Select * from blackhack where name = "+username);
-			if (username.equals(r.getString("name"))) {
+			r = s.executeQuery("Select * from blackhack where username = '"+username+"'");
+			if (r.absolute(1) == true) {
 				status = 0;
 				}
 			else {
-				r = s.executeQuery("Insert into blackhack values (default,"+username+","+password+", 5000)");
-				r.close();
+				s.executeUpdate("Insert into blackhack values (default,'"+username+"','"+password+"', 5000)");
+				
 				status = 1;
 			}		
 		} catch (SQLException e) {
@@ -75,11 +75,10 @@ public class DBConnector {
 	void updateCredits(Player p, String cred) {
 		String username = p.getUsername();
 		Statement s = null;
-		ResultSet r = null;
 		try (Connection connect = DriverManager.getConnection(conn);){
 			s = connect.createStatement();
-			r = s.executeQuery("Update blackhack set credits = '"+cred+"' where username = '"+username+"'");
-			r.close();
+			s.executeUpdate("Update blackhack set credits = '"+cred+"' where username = '"+username+"'");
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
