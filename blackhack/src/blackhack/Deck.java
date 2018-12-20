@@ -1,40 +1,34 @@
 package blackhack;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Deck {
-	private ArrayList<Card> deck = new ArrayList<Card>();
+	private ArrayDeque<Card> deck;
 
 	public Deck() {
-		for (Suits s: Suits.values()) 
-		{
-			for (Ranks r: Ranks.values()) 
+		ArrayList<Card> tDeck = new ArrayList<Card>();
+
+		for (int i = 1; i < 5; i++) {
+			for (String suit: new Card().getSuit()) 
 			{
-				Card c = new Card(s,r);
-				deck.add(c);
+				for (int rank: new Card().getRank()) 
+				{
+					tDeck.add(new Card(suit, rank));
+				}
 			}
 		}
-		shuffleDeck();
+		Collections.shuffle(tDeck);
+		deck = new ArrayDeque<Card>(tDeck);
 	}
 	
-	public void printCards() {
-		for (Card c: deck)
-		{
-			System.out.println(c.getSuit());
-			System.out.println(c.getRank());
-		}
-
+	public ArrayDeque<Card> getDeck() {
+		return deck;
 	}
 	
-	private void shuffleDeck() {
-		Collections.shuffle(deck);
-	}
-	
-	/* Testing area
 	public static void main(String args[]) {
 		Deck d = new Deck();
-		d.printCards();
 	}
-	*/
 }

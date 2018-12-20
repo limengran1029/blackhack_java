@@ -1,33 +1,38 @@
 package blackhack;
 
 public class Card {
-	private Suits suit;
-	private Ranks rank;
-	
-	
-	public Card(Suits suit, Ranks rank) {
-		this.setSuit(suit);
-		this.setRank(rank);
+	private String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
+	private int[] ranks = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+	private String suit;
+	private int rank;
+
+	public Card() {
 	}
 
-
-	public Suits getSuit() {
-		return suit;
-	}
-
-
-	public void setSuit(Suits suit) {
+	public Card(String suit, int rank) {
 		this.suit = suit;
-	}
-
-
-	public Ranks getRank() {
-		return rank;
-	}
-
-
-	public void setRank(Ranks rank) {
 		this.rank = rank;
+
 	}
 
+	public String[] getSuit() {
+		return suits;
+	}
+
+	public void setSuit(String[] suit) {
+		this.suits = suit;
+	}
+
+	public int[] getRank() {
+		return ranks;
+	}
+
+	public void setRank(int[] rank) {
+		this.ranks = rank;
+	}
+	
+	public String toString() {
+		return "Card >" + suit + " | " + rank;
+	}
+	
 }
