@@ -12,9 +12,9 @@ public class Deck {
 
 		// 4 represents num of decks in the whole deck stack
 		for (int i = 1; i <= 4; i++) {
-			for (String suit: new Card().getSuit()) 
+			for (String suit: Card.SUITS)
 			{
-				for (int rank: new Card().getRank()) 
+				for (int rank: Card.RANKS)
 				{
 					tDeck.add(new Card(suit, rank));
 				}
