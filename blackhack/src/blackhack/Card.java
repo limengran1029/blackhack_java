@@ -13,12 +13,52 @@ public class Card {
 
 	public Card(String suit, int rank) {
 		this.suit = suit;
-		this.rank = rank;
+		this.setRank(rank);
 
 	}
 	
 	public String toString() {
-		return "Card > " + rank + " of " + suit;
+		String option;
+		switch (getRank()) {
+		case 11:
+			option = "J";
+			break;
+		case 12:
+			option = "K";
+			break;
+		case 13:
+			option = "Q";
+			break;
+		case 14:
+			option = "A";
+			break;
+		default:
+			option = String.valueOf(getRank());
+			break;
+		}
+		return "Card > " + option + " of " + suit;
+	}
+
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
+	public int newRank( ) {
+		int newrank;
+		if (rank == 14) {
+			newrank = 1;
+		}
+		else if (10< rank && rank < 14) {
+			newrank = 10;
+		}
+		else {
+			newrank = rank;
+		}
+		return newrank;
 	}
 	
 }

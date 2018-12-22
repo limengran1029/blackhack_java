@@ -29,6 +29,7 @@ public class DBConnector {
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
+			status = 2;
 		}
 		return status;
 	}
@@ -50,6 +51,7 @@ public class DBConnector {
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
+			status =2;
 		}
 		System.out.println(status);
 		return status;
