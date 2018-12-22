@@ -75,7 +75,10 @@ public class Game {
 		boolean continu = true;
 		while (continu) {			
 			gamelogic();
-			System.out.println("[1]Continu\n[2]Exit");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e){} 
+			System.out.println("\n[1]Continu\n[2]Exit");
 			String choice = inp.next();
 			if (choice.equals("2")) {
 				continu = false;
@@ -86,66 +89,57 @@ public class Game {
 	}
 	
 	private void gamelogic() {		
-		System.out.println("Game start!");
+		System.out.println("\nGame start!");
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e){} 
 		Boolean value = true;
 		while (value) {
-			Card cardc0,cardc,cardh;
-			int sumc=0,sumh=0;
+			Card cardc, cardh;
 			Deck d = new Deck();
-			cardc0 = d.drawCard();
-			cardc = d.drawCard();
-			computer.add(cardc0);
-			computer.add(cardc);
-			sumc = cardc0.newRank() + cardc.newRank();
 			for (int i = 0; i < 2; i++) {
+				cardc = d.drawCard();			
+				computer.add(cardc);
 				cardh = d.drawCard();
 				human.add(cardh);
-				sumh += cardh.newRank();
-			}	
-			System.out.println("Computers card: [******************, "+cardc+"]");
+			}
+			
+			System.out.println("Computers card: [******************, "+computer.get(1)+"]");
 			System.out.println("Your card     : "+human);
 
-			do{
+			while (value){
 				System.out.println("hit or stand? (h/s) ");
 				String choice = inp.next();
 				if (choice.equals("h") || choice.equals("H")) {
 					cardh = d.drawCard();
-					human.add(cardh);
-					sumh += cardh.newRank();
-					System.out.println("Computers card: [******************, "+cardc+"]");
+					human.add(cardh);					
+					System.out.println("Computers card: [******************, "+computer.get(1)+"]");
 					System.out.println("Your card     : "+human);
 					
-					if (sumh>21) {
+					if (point(human) > 21) {
 						System.out.println("You are loser!");
-						System.out.println("Final result: ");
-						System.out.println("Computer card : "+computer);
-						System.out.println("Your card     : "+human);
+						printresult();
 						computer.clear();
 						human.clear();
 						value = false;
 					}
 				}
 				else if (choice.equals("s") || choice.equals("S")) {
-					System.out.println("Computer card : "+computer);
-					
-					while (sumc<17) {
+					while (point(computer) < 17) {
 						cardc = d.drawCard();
 						computer.add(cardc);
-						sumc += cardc.newRank();
 					}
 
-					if (sumc>21 || sumh>sumc) {
+					if (point(computer) > 21 || point(human) > point(computer)) {
 						System.out.println("You are winner!");						
 					}
-					else if (sumh==sumc) {
+					else if (point(human) == point(computer)) {
 						System.out.println("It is tie!");						
 					}
 					else {
 						System.out.println("You are loser!");
 					}
-					System.out.println("Final result: ");
-					System.out.println("Computer card : "+computer);
-					System.out.println("Your card     : "+human);
+					printresult();
 					computer.clear();
 					human.clear();
 					value = false;
@@ -154,12 +148,46 @@ public class Game {
 					System.out.println("Please enter the right option");
 				}
 				
-			}while (value);
-		}
-		 
+			}
+		}		 
 		
 	}
 	
 	
+	
+	private int point(ArrayList<Card> player){
+		int sum = 0;
+		int numberofA = 0;
 
+		for(int i = 0; i < player.size(); i++){
+			Card c = player.get(i);
+			if(c.newRank() >= 2 && c.newRank() <= 10){
+				sum += c.newRank();
+			}
+			else if(c.newRank() == 11){
+				numberofA ++;
+			}
+		}
+
+		if(numberofA != 0){
+			if(sum + (numberofA*11) > 21){
+				sum += numberofA;
+			}
+			else{
+				sum += 11;
+			}
+		}
+		
+		return sum;
+
+	}
+
+	private void printresult() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e){} 
+		System.out.println("\nFinal result: ");
+		System.out.println("Computer's point: "+point(computer)+"\nComputer card : "+computer);
+		System.out.println("Your point      : "+point(human)+"\nYour card     : "+human);
+	}
 }

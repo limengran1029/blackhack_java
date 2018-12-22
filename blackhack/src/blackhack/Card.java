@@ -50,7 +50,7 @@ public class Card {
 	public int newRank( ) {
 		int newrank;
 		if (rank == 14) {
-			newrank = 1;
+			newrank = 11;
 		}
 		else if (10< rank && rank < 14) {
 			newrank = 10;
