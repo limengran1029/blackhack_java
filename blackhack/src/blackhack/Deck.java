@@ -22,6 +22,7 @@ public class Deck {
 		}
 		Collections.shuffle(tDeck);
 		deck = new ArrayDeque<Card>(tDeck);
+		tDeck = null; //remove from memory
 	}
 	
 	public Card drawCard() {

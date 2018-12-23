@@ -1,25 +1,22 @@
 package blackhack;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
 	Scanner inp = new Scanner(System.in);
-	Player p = new Player();
+	Player player = new Player();
+	Player dealer = new Player();
 	final DBConnector db = new DBConnector();
-	private ArrayList<Card> computer = new ArrayList<Card>();
-	private ArrayList<Card> human = new ArrayList<Card>(); 
-
 
 	public void start() {
 		System.out.println("Welcome to Blackhack!\n[1]Login\n[2]Register\n[3]Exit");
 		menuOptions(inp.next());
-		
-		
 	}
 	
 	private void menuOptions(String option) {
+
 		Boolean menu = true;
+
 		while(menu)
 			if (option.equals("1"))
 			{
@@ -27,13 +24,13 @@ public class Game {
 					String usr = inp.next();
 					System.out.println("Enter password: ");
 					String pw = inp.next();
-					p.setCredentials(usr, pw);				
-					if (db.login(p) == 1)
+					player.setCredentials(usr, pw);				
+					if (db.login(player) == 1)
 					{
-						System.out.println("Welcome "+ p.getUsername()+"!");
+						System.out.println("Welcome "+ player.getUsername()+"!");
 						menu = false;
 					}
-					else if (db.registerPlayer(p) == 2) {
+					else if (db.registerPlayer(player) == 2) {
 						System.out.println("Communications link failure");
 					}
 					else
@@ -47,12 +44,12 @@ public class Game {
 					String usr = inp.next();
 					System.out.println("Enter desired Password: ");
 					String pw = inp.next();
-					p.setCredentials(usr, pw);				
-					if (db.registerPlayer(p) == 1) {
+					player.setCredentials(usr, pw);				
+					if (db.registerPlayer(player) == 1) {
 						System.out.println("You have successfully created your account!\n Account name: "+usr);
 						break;
 					}
-					else if (db.registerPlayer(p) == 2) {
+					else if (db.registerPlayer(player) == 2) {
 						System.out.println("Communications link failure");
 					}
 					else {
@@ -71,78 +68,93 @@ public class Game {
 		
 	}
 
-	public void gamestart() {
-		boolean continu = true;
-		while (continu) {			
-			gamelogic();
+	public void gameStart() {
+
+		while (true) {			
+			gameLogic();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e){} 
+
 			System.out.println("\n[1]Continu\n[2]Exit");
 			String choice = inp.next();
+
 			if (choice.equals("2")) {
-				continu = false;
 				System.out.println("Thanks for playing, se you again!");
+				break;
 			}
-			
 		}
 	}
 	
-	private void gamelogic() {		
+	private void gameLogic() {		
+
 		System.out.println("\nGame start!");
+
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e){} 
+
 		Boolean value = true;
+
 		while (value) {
-			Card cardc, cardh;
+
+			//Card cardc, cardh;
+
 			Deck d = new Deck();
 			for (int i = 0; i < 2; i++) {
-				cardc = d.drawCard();			
-				computer.add(cardc);
-				cardh = d.drawCard();
-				human.add(cardh);
+				//cardc = d.drawCard();			
+				dealer.addCard(d.drawCard());
+				//cardh = d.drawCard();
+				player.addCard(d.drawCard());
 			}
 			
-			System.out.println("Computers card: [******************, "+computer.get(1)+"]");
-			System.out.println("Your card     : "+human);
+			System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
+			System.out.println("Your card     : "+player.getHand());
 
-			while (value){
+			while (true){
 				System.out.println("hit or stand? (h/s) ");
 				String choice = inp.next();
 				if (choice.equals("h") || choice.equals("H")) {
-					cardh = d.drawCard();
-					human.add(cardh);					
-					System.out.println("Computers card: [******************, "+computer.get(1)+"]");
-					System.out.println("Your card     : "+human);
+					player.addCard(d.drawCard());
+					//cardh = d.drawCard();
+					//human.add(cardh);					
+					System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
+					System.out.println("Your card     : "+player.getHand());
 					
-					if (point(human) > 21) {
+					if (player.getPoints() > 21) {
 						System.out.println("You are loser!");
-						printresult();
-						computer.clear();
-						human.clear();
+						printResult(player, dealer);
+						dealer.getHand().clear();
+						player.getHand().clear();
 						value = false;
 					}
 				}
 				else if (choice.equals("s") || choice.equals("S")) {
-					while (point(computer) < 17) {
-						cardc = d.drawCard();
-						computer.add(cardc);
+					while (dealer.getPoints() < 17) 
+					{
+						dealer.addCard(d.drawCard());
 					}
 
-					if (point(computer) > 21 || point(human) > point(computer)) {
+					if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) 
+					{
 						System.out.println("You are winner!");						
 					}
-					else if (point(human) == point(computer)) {
+					else if (player.getPoints() == dealer.getPoints()) 
+					{
 						System.out.println("It is tie!");						
 					}
-					else {
+					else 
+					{
 						System.out.println("You are loser!");
 					}
-					printresult();
-					computer.clear();
-					human.clear();
-					value = false;
+
+					printResult(player, dealer);
+
+					dealer.getHand().clear();
+
+					player.getHand().clear();
+
+					break;
 				}
 				else {
 					System.out.println("Please enter the right option");
@@ -153,41 +165,12 @@ public class Game {
 		
 	}
 	
-	
-	
-	private int point(ArrayList<Card> player){
-		int sum = 0;
-		int numberofA = 0;
-
-		for(int i = 0; i < player.size(); i++){
-			Card c = player.get(i);
-			if(c.newRank() >= 2 && c.newRank() <= 10){
-				sum += c.newRank();
-			}
-			else if(c.newRank() == 11){
-				numberofA ++;
-			}
-		}
-
-		if(numberofA != 0){
-			if(sum + (numberofA*11) > 21){
-				sum += numberofA;
-			}
-			else{
-				sum += 11;
-			}
-		}
-		
-		return sum;
-
-	}
-
-	private void printresult() {
+	private void printResult(Player p, Player d) {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e){} 
 		System.out.println("\nFinal result: ");
-		System.out.println("Computer's point: "+point(computer)+"\nComputer card : "+computer);
-		System.out.println("Your point      : "+point(human)+"\nYour card     : "+human);
+		System.out.println("Computer's point: "+d.getPoints()+"\nComputer card : "+d.getHand());
+		System.out.println("Your point      : "+p.getPoints()+"\nYour card     : "+p.getHand());
 	}
 }
