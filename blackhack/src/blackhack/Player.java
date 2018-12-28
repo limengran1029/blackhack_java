@@ -62,10 +62,6 @@ public class Player {
 		return hand;
 	}
 	
-	public void printHandandPoints() {
-		System.out.println("[" + hand + "\npoints: " + String.valueOf(getPoints())+"]");
-	}
-
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}

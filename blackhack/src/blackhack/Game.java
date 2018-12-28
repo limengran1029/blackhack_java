@@ -105,8 +105,7 @@ public class Game {
 			}
 			
 			System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
-			//System.out.println("Your card     : "+player.getHand()+" | points: " +player.getPoints());
-			player.printHandandPoints();
+			System.out.println("Your card     : "+player.getHand()+" | points: " +player.getPoints());
 
 			while (true){
 
@@ -117,8 +116,7 @@ public class Game {
 
 					player.addCard(d.drawCard());
 					System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
-					//System.out.println("Your card     : "+player.getHand());
-					player.printHandandPoints();
+					System.out.println("Your card     : "+player.getHand());
 					
 					if (player.getPoints() > 21) {
 						System.out.println("You are loser!");
