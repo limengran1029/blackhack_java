@@ -24,20 +24,20 @@ public class Game {
 					String usr = inp.next();
 					System.out.println("Enter password: ");
 					String pw = inp.next();
+
 					player.setCredentials(usr, pw);				
-					if (db.login(player) == 1)
+
+					if (db.login(player))
 					{
 						System.out.println("Welcome "+ player.getUsername()+"!");
 						menu = false;
 					}
-					else if (db.registerPlayer(player) == 2) {
-						System.out.println("Communications link failure");
-					}
 					else
 					{
-						System.out.println("Wrong username!");
+						System.out.println("Communications link failure");
 					}
 				}
+
 			else if (option.equals("2"))
 			{
 					System.out.println("Enter desired Username: ");
@@ -45,15 +45,12 @@ public class Game {
 					System.out.println("Enter desired Password: ");
 					String pw = inp.next();
 					player.setCredentials(usr, pw);				
-					if (db.registerPlayer(player) == 1) {
+					if (db.registerPlayer(player)) {
 						System.out.println("You have successfully created your account!\n Account name: "+usr);
 						break;
 					}
-					else if (db.registerPlayer(player) == 2) {
-						System.out.println("Communications link failure");
-					}
 					else {
-						System.out.println("Username already taken!");
+						System.out.println("See error code");
 					}
 				
 		}

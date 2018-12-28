@@ -8,82 +8,99 @@ import java.sql.Statement;
 public class DBConnector {
 	
 	final String conn = "jdbc:mysql://thevoid.myftp.org/devops18?user=devops18&password=asdasd123321";
+	Connection connect;
+	
+	public DBConnector() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			connect = DriverManager.getConnection(conn);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public boolean registerPlayer(Player p) {
 
-	
-	int registerPlayer(Player p) {
-		String username = p.getUsername();
-		String password = p.getPassword();
-		int status = 0;
-		Statement s = null;
-		ResultSet r = null;
-		try (Connection connect = DriverManager.getConnection(conn);){
-			s = connect.createStatement();
-			r = s.executeQuery("Select * from blackhack where username = '"+username+"'");
+		try {
+			Statement s = connect.createStatement();
+			ResultSet r = s.executeQuery("Select * from blackhack where username = '"+p.getUsername()+"'");
+
 			if (r.absolute(1) == true) {
-				status = 0;
+				System.out.println("User is already in database");
+				return false;
 				}
 			else {
-				s.executeUpdate("Insert into blackhack values (default,'"+username+"','"+password+"', 5000)");
-				
-				status = 1;
+				s.executeUpdate("Insert into blackhack values (default,'"+p.getUsername()+"','"+p.getPassword()+"', 5000)");
+				return true;
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
-			status = 2;
+			return false;
 		}
-		return status;
+
 	}
 	
-	int login(Player p) {
-		String username = p.getUsername();
-		String password = p.getPassword();
-		int status = 0;
-		Statement s = null;
-		ResultSet r = null;
-		try (Connection connect = DriverManager.getConnection(conn);){
-			s = connect.createStatement();
-			r = s.executeQuery("Select username, password from blackhack where username = '"+username+"' and password = '"+password+"'");
-			if (r.absolute(1) == true) {
-				status = 1;
-				}
-			else {
-				status = 0;
+	public boolean login(Player p) {
+
+		try {
+
+			Statement s = connect.createStatement();
+			ResultSet r = s.executeQuery("Select username, password from blackhack where username = '"+p.getUsername()+"' and password = '"+p.getPassword()+"'");
+
+			if (r.absolute(1) == true) 
+			{
+				System.out.println("Successfull!");
+				return false;
+			}
+			else 
+			{
+				return false;
 			}		
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
-			status =2;
+			System.out.println("See error code");
+			return false;
 		}
-		System.out.println(status);
-		return status;
 	}
 	
-	int showCredits(Player p) {
-		String username = p.getUsername();
+	public int getPlayerCredit(Player p) {
 		int credits = 0;
-		Statement s = null;
-		ResultSet r = null;
-		try (Connection connect = DriverManager.getConnection(conn);){
-			s = connect.createStatement();
-			r = s.executeQuery("Select credits from blackhack where username = '"+username+"'");
+
+		try 
+		{
+			Statement s = connect.createStatement();
+			ResultSet r = s.executeQuery("Select credits from blackhack where username = '"+p.getUsername()+"'");
 			credits = Integer.parseInt(r.getString("credits"));
 			
-		} catch (SQLException e) {
+		} 
+
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 	
 		return credits;
 	}
 	
-	void updateCredits(Player p, String cred) {
-		String username = p.getUsername();
-		Statement s = null;
-		try (Connection connect = DriverManager.getConnection(conn);){
-			s = connect.createStatement();
-			s.executeUpdate("Update blackhack set credits = '"+cred+"' where username = '"+username+"'");
+	public void updateCredits(Player p, String cred) {
+
+		try 
+		{
+			Statement s = connect.createStatement();
+			s.executeUpdate("Update blackhack set credits = '"+cred+"' where username = '"+p.getUsername()+"'");
 			
-			
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
+			System.out.println("Unable to get credits");
 		}
 		
 	}
