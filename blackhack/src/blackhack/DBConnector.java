@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 public class DBConnector {
 	
-	final String conn = "jdbc:mysql://thevoid.myftp.org/devops18?user=devops18&password=asdasd123321";
+	final String connString = "jdbc:mysql://thevoid.myftp.org/devops18?user=devops18&password=asdasd123321";
 	Connection connect;
 	
 	public DBConnector() {
@@ -17,7 +17,7 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 		try {
-			connect = DriverManager.getConnection(conn);
+			connect = DriverManager.getConnection(connString);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
