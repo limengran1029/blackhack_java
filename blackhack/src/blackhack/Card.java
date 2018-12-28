@@ -8,13 +8,9 @@ public class Card {
 	private String suit;
 	private int rank;
 
-	public Card() {
-	}
-
 	public Card(String suit, int rank) {
 		this.suit = suit;
 		this.setRank(rank);
-
 	}
 	
 	public String toString() {
@@ -40,25 +36,17 @@ public class Card {
 	}
 
 	public int getRank() {
+		if (this.rank == 14) {
+			rank = 11;
+		}
+		else if (10< this.rank && this.rank < 14) {
+			rank = 10;
+		}
 		return rank;
 	}
 
 	public void setRank(int rank) {
 		this.rank = rank;
-	}
-	
-	public int newRank( ) {
-		int newrank;
-		if (rank == 14) {
-			newrank = 11;
-		}
-		else if (10< rank && rank < 14) {
-			newrank = 10;
-		}
-		else {
-			newrank = rank;
-		}
-		return newrank;
 	}
 	
 }

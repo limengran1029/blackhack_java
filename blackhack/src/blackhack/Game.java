@@ -88,6 +88,8 @@ public class Game {
 	
 	private void gameLogic() {		
 
+		Deck d = new Deck();
+
 		System.out.println("\nGame start!");
 
 		try {
@@ -98,28 +100,28 @@ public class Game {
 
 		while (value) {
 
-			//Card cardc, cardh;
 
-			Deck d = new Deck();
 			for (int i = 0; i < 2; i++) {
-				//cardc = d.drawCard();			
+
 				dealer.addCard(d.drawCard());
-				//cardh = d.drawCard();
 				player.addCard(d.drawCard());
 			}
 			
 			System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
-			System.out.println("Your card     : "+player.getHand());
+			//System.out.println("Your card     : "+player.getHand()+" | points: " +player.getPoints());
+			player.printHandandPoints();
 
 			while (true){
+
 				System.out.println("hit or stand? (h/s) ");
 				String choice = inp.next();
+
 				if (choice.equals("h") || choice.equals("H")) {
+
 					player.addCard(d.drawCard());
-					//cardh = d.drawCard();
-					//human.add(cardh);					
 					System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
-					System.out.println("Your card     : "+player.getHand());
+					//System.out.println("Your card     : "+player.getHand());
+					player.printHandandPoints();
 					
 					if (player.getPoints() > 21) {
 						System.out.println("You are loser!");
