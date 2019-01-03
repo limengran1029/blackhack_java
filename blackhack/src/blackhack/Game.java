@@ -31,6 +31,7 @@ public class Game {
 					{
 						System.out.println("Welcome "+ player.getUsername()+"!");
 						menu = false;
+						gameStart();
 					}
 					else
 					{
@@ -73,7 +74,7 @@ public class Game {
 				Thread.sleep(1000);
 			} catch (InterruptedException e){} 
 
-			System.out.println("\n[1]Continu\n[2]Exit");
+			System.out.println("\n[1]Continue\n[2]Exit");
 			String choice = inp.next();
 
 			if (choice.equals("2")) {
