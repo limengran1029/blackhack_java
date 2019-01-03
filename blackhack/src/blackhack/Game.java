@@ -72,6 +72,7 @@ public class Game {
 		int betamount = inp.nextInt();
 		if (db.getPlayerCredit(player) >= betamount) {
 			db.updateCredits(player, db.getPlayerCredit(player)-betamount);
+			player.setBet(betamount);
 			gameLogic();
 		}
 		else {
