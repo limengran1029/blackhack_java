@@ -76,6 +76,7 @@ public class Game {
 			gameLogic();
 		}
 		else {
+			System.out.println("Please add your credit!");
 			gameStart();
 		}
 	}
@@ -119,7 +120,6 @@ public class Game {
 		Deck d = new Deck();
 
 		System.out.println("\nGame start!");
-		boolean game = true;
 		boolean hitStand = true;
 
 		try {
@@ -175,9 +175,18 @@ public class Game {
 					db.updateCredits(player, db.getPlayerCredit(player)-player.getBet());
 					player.addCardToHand(d.drawCard());
 					System.out.println("Your hand: " + player.getHandText()+ " total: " + player.getPoints());
-					doDealerBust(d);
-					calcPoints(d, "d");
+					if (player.getPoints() >21) {
+						System.out.println("You bust");
+					}
+					else {
+						doDealerBust(d);
+						calcPoints(d, "d");
+					}
 					hitStand = false;
+					
+					printResult(player, dealer);
+					dealer.getHand().clear();
+					player.getHand().clear();
 				}
 				else {
 					System.out.println("Enter a valid option");
@@ -186,7 +195,7 @@ public class Game {
 		}
 	}
 	
-	private void calcPoints(Deck d, String s) {
+	private void calcPoints(Deck d, String s) {		
 		if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
 			System.out.println("You won!");
 			if (s.toLowerCase().equals("s"))
