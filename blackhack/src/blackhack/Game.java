@@ -143,7 +143,7 @@ public class Game {
 		else {
 			while (hitStand){
 
-				System.out.println("Hit or stand? (h/s) ");
+				System.out.println("Hit, Stand or Double? (h/s/d) ");
 				String choice = inp.next();
 
 				if (choice.toLowerCase().equals("h")) {
@@ -161,41 +161,57 @@ public class Game {
 				}
 				else if (choice.toLowerCase().equals("s")) {
 					System.out.println("Dealer shows both her cards: " + dealer.getHandText() + "Total: " + dealer.getPoints());
-					while (dealer.getPoints() < 17) {
-						dealer.addCardToHand(d.drawCard());
-						System.out.println("Dealer drew a: " + dealer.getHand().get(dealer.getHand().size()-1));
-						System.out.println("Dealer score: " + dealer.getPoints());
-						hitStand = false;
-					}
-
-					if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
-						System.out.println("You won!");						
-						db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
-						hitStand = false;
-					}
-
-					else if (player.getPoints() == dealer.getPoints()) {
-						System.out.println("It is tie!");						
-						db.updateCredits(player, db.getPlayerCredit(player) + player.getBet());
-						hitStand = false;
-					}
-					else {
-						System.out.println("You lose!");
-						hitStand = false;
-					}
+					doDealerBust(d);
+					calcPoints(d, "s");
+					hitStand = false;
 
 					printResult(player, dealer);
-
 					dealer.getHand().clear();
-
 					player.getHand().clear();
 				}
+				
+				else if (choice.toLowerCase().equals("d")){
+					System.out.println("You choose to double, you get one card.");
+					db.updateCredits(player, db.getPlayerCredit(player)-player.getBet());
+					player.addCardToHand(d.drawCard());
+					System.out.println("Your hand: " + player.getHandText()+ " total: " + player.getPoints());
+					doDealerBust(d);
+					calcPoints(d, "d");
+					hitStand = false;
+				}
 				else {
-					System.out.println("Please enter the right option");
+					System.out.println("Enter a valid option");
 				}
 			}
 		}
-	}		 
+	}
+	
+	private void calcPoints(Deck d, String s) {
+		if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
+			System.out.println("You won!");
+			if (s.toLowerCase().equals("s"))
+			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
+			else {
+			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 4));
+			}
+		}
+
+		else if (player.getPoints() == dealer.getPoints()) {
+			System.out.println("It is tie!");						
+			db.updateCredits(player, db.getPlayerCredit(player) + player.getBet());
+		}
+		else {
+			System.out.println("You lose!");
+		}
+	}
+	
+	private void doDealerBust(Deck d) {
+		while (dealer.getPoints() < 17) {
+			dealer.addCardToHand(d.drawCard());
+			System.out.println("Dealer drew a: " + dealer.getHand().get(dealer.getHand().size()-1));
+			System.out.println("Dealer score: " + dealer.getPoints());
+		}
+	}
 
 	private void printResult(Player p, Player d) {
 		try {
