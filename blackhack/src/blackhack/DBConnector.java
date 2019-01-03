@@ -76,7 +76,7 @@ public class DBConnector {
 		{
 			Statement s = connect.createStatement();
 			ResultSet r = s.executeQuery("Select credits from blackhack where username = '"+p.getUsername()+"'");
-			//credits = Integer.parseInt(r.getString("credits"));
+
 			while(r.next())
 				credits = r.getInt("credits");
 			

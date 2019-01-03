@@ -113,13 +113,21 @@ public class Game {
 
 
 			for (int i = 0; i < 2; i++) {
-
-				dealer.addCard(d.drawCard());
-				player.addCard(d.drawCard());
+				dealer.addCardToHand(d.drawCard());
+				player.addCardToHand(d.drawCard());
 			}
 			
-			System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
-			System.out.println("Your card     : "+player.getHand()+" | points: " +player.getPoints());
+			System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
+			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
+
+			if (player.getPoints() == 21) {
+				System.out.println("Congratulations you won");
+				value = false;
+				
+			}
+			else {
+				
+			}
 
 			while (true){
 
@@ -128,7 +136,7 @@ public class Game {
 
 				if (choice.equals("h") || choice.equals("H")) {
 
-					player.addCard(d.drawCard());
+					player.addCardToHand(d.drawCard());
 					System.out.println("Computers card: [******************, "+dealer.getHand().get(1)+"]");
 					System.out.println("Your card     : "+player.getHand());
 					
@@ -143,7 +151,7 @@ public class Game {
 				else if (choice.equals("s") || choice.equals("S")) {
 					while (dealer.getPoints() < 17) 
 					{
-						dealer.addCard(d.drawCard());
+						dealer.addCardToHand(d.drawCard());
 					}
 
 					if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) 

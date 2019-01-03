@@ -13,6 +13,7 @@ public class Card {
 		this.setRank(rank);
 	}
 	
+	@Override
 	public String toString() {
 		String option;
 		switch (getRank()) {
@@ -32,7 +33,7 @@ public class Card {
 			option = String.valueOf(getRank());
 			break;
 		}
-		return "Card > " + option + " of " + suit;
+		return option +" of "+ suit;
 	}
 
 	public int getRank() {

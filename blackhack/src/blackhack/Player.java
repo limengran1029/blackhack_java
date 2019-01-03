@@ -8,6 +8,11 @@ public class Player {
 	private int credits;
 
 	private ArrayList<Card> hand = new ArrayList<Card>();
+	
+	public int getDealerPoints() {
+		int sum = this.hand.get(0).getRank();
+		return sum;
+	}
 
 	public int getPoints(){
 			
@@ -57,16 +62,27 @@ public class Player {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public ArrayList<Card> getHand() {
-		return hand;
+		return this.hand;
+	}
+
+	public String getHandText() {
+
+		StringBuilder builder = new StringBuilder();
+
+		for (Card c: hand) {
+			builder.append(c + ", ");
+		}
+		String handText = builder.toString();
+		return handText;
 	}
 	
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 	
-	public void addCard(Card c) {
+	public void addCardToHand(Card c) {
 		this.hand.add(c);
 	}
 
