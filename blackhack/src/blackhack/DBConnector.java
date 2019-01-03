@@ -54,8 +54,7 @@ public class DBConnector {
 
 			if (r.absolute(1) == true) 
 			{
-				System.out.println("Successfull!");
-				return false;
+				return true;
 			}
 			else 
 			{
@@ -77,7 +76,9 @@ public class DBConnector {
 		{
 			Statement s = connect.createStatement();
 			ResultSet r = s.executeQuery("Select credits from blackhack where username = '"+p.getUsername()+"'");
-			credits = Integer.parseInt(r.getString("credits"));
+			//credits = Integer.parseInt(r.getString("credits"));
+			while(r.next())
+				credits = r.getInt("credits");
 			
 		} 
 
@@ -89,7 +90,7 @@ public class DBConnector {
 		return credits;
 	}
 	
-	public void updateCredits(Player p, String cred) {
+	public void updateCredits(Player p, int cred) {
 
 		try 
 		{
