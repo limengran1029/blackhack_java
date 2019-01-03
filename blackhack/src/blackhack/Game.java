@@ -119,7 +119,7 @@ public class Game {
 		Deck d = new Deck();
 
 		System.out.println("\nGame start!");
-		boolean game = true;
+		//boolean game = true;
 		boolean hitStand = true;
 
 		try {
