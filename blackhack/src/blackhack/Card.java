@@ -8,17 +8,45 @@ public class Card {
 	private String suit;
 	private int rank;
 
-	public Card() {
-	}
-
 	public Card(String suit, int rank) {
 		this.suit = suit;
-		this.rank = rank;
-
+		this.setRank(rank);
 	}
 	
 	public String toString() {
-		return "Card > " + rank + " of " + suit;
+		String option;
+		switch (getRank()) {
+		case 11:
+			option = "J";
+			break;
+		case 12:
+			option = "K";
+			break;
+		case 13:
+			option = "Q";
+			break;
+		case 14:
+			option = "A";
+			break;
+		default:
+			option = String.valueOf(getRank());
+			break;
+		}
+		return "Card > " + option + " of " + suit;
+	}
+
+	public int getRank() {
+		if (this.rank == 14) {
+			rank = 11;
+		}
+		else if (10< this.rank && this.rank < 14) {
+			rank = 10;
+		}
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 	
 }
