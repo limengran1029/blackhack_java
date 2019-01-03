@@ -126,89 +126,84 @@ public class Game {
 			Thread.sleep(1500);
 		} catch (InterruptedException e){} 
 
-		do {
+		// Draw 2 cards for players
+		for (int i = 0; i < 2; i++) {
+			dealer.addCardToHand(d.drawCard());
+			player.addCardToHand(d.drawCard());
+		}
 
-			// Draw 2 cards for players
-			for (int i = 0; i < 2; i++) {
-				dealer.addCardToHand(d.drawCard());
-				player.addCardToHand(d.drawCard());
-			}
+		//Print first hands
+		System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
+		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
 
-			//Print first hands
-			System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
-			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
+		//Check if first hands are 21
+		if (player.getPoints() == 21) {
+			System.out.println("Congratulations you won");
+		}
+		else {
+			while (hitStand){
 
-			//Check if first hands are 21
-			if (player.getPoints() == 21) {
-				System.out.println("Congratulations you won");
-				game = false;
-			}
-			else {
-				while (hitStand){
+				System.out.println("Hit or stand? (h/s) ");
+				String choice = inp.next();
 
-					System.out.println("Hit or stand? (h/s) ");
-					String choice = inp.next();
+				if (choice.toLowerCase().equals("h")) {
 
-					if (choice.toLowerCase().equals("h")) {
+					player.addCardToHand(d.drawCard());
+					System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
+					System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
 
-						player.addCardToHand(d.drawCard());
-						System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
-						System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
-
-						if (player.getPoints() > 21) {
-							System.out.println("You bust");
-							System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
-
-							dealer.getHand().clear();
-							player.getHand().clear();
-							game = false;
-						}
-					}
-					else if (choice.toLowerCase().equals("s")) {
-						while (dealer.getPoints() < 17) {
-							dealer.addCardToHand(d.drawCard());
-						}
-
-						if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
-							System.out.println("You won!");						
-							db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
-							printResult(player, dealer);
-							game = false;
-						}
-
-						else if (player.getPoints() == dealer.getPoints()) {
-							System.out.println("It is tie!");						
-							db.updateCredits(player, db.getPlayerCredit(player) + player.getBet());
-							printResult(player, dealer);
-							game = false;
-						}
-						else {
-							System.out.println("You lose!");
-							printResult(player, dealer);
-							game = false;
-						}
-
-						printResult(player, dealer);
-
+					if (player.getPoints() > 21) {
+						System.out.println("You bust");
 						dealer.getHand().clear();
-
 						player.getHand().clear();
-					}
-					else {
-						System.out.println("Please enter the right option");
+						hitStand = false;
 					}
 				}
+				else if (choice.toLowerCase().equals("s")) {
+					System.out.println("Dealer shows both her cards: " + dealer.getHandText() + "Total: " + dealer.getPoints());
+					while (dealer.getPoints() < 17) {
+						dealer.addCardToHand(d.drawCard());
+						System.out.println("Dealer drew a: " + dealer.getHand().get(dealer.getHand().size()-1));
+						System.out.println("Dealer score: " + dealer.getPoints());
+						hitStand = false;
+					}
+
+					if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
+						System.out.println("You won!");						
+						db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
+						hitStand = false;
+					}
+
+					else if (player.getPoints() == dealer.getPoints()) {
+						System.out.println("It is tie!");						
+						db.updateCredits(player, db.getPlayerCredit(player) + player.getBet());
+						hitStand = false;
+					}
+					else {
+						System.out.println("You lose!");
+						hitStand = false;
+					}
+
+					printResult(player, dealer);
+
+					dealer.getHand().clear();
+
+					player.getHand().clear();
+				}
+				else {
+					System.out.println("Please enter the right option");
+				}
 			}
-		} while (game);
+		}
 	}		 
 
 	private void printResult(Player p, Player d) {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e){} 
-		System.out.println("\nFinal result: ");
-		System.out.println("Computer's point: "+d.getPoints()+"\nComputer card : "+d.getHand());
-		System.out.println("Your point      : "+p.getPoints()+"\nYour card     : "+p.getHand());
+		System.out.println("\nFinal results: ");
+		System.out.println("Dealer score: "+d.getPoints());
+		System.out.println("Your score: "+p.getPoints());
 	}
 	
 	private void bjRules() {
