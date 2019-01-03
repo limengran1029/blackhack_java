@@ -170,13 +170,14 @@ public class Game {
 
 						if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
 							System.out.println("You won!");						
-							db.updateCredits(player, 20);
+							db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
 							printResult(player, dealer);
 							game = false;
 						}
 
 						else if (player.getPoints() == dealer.getPoints()) {
 							System.out.println("It is tie!");						
+							db.updateCredits(player, db.getPlayerCredit(player) + player.getBet());
 							printResult(player, dealer);
 							game = false;
 						}
