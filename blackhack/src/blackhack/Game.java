@@ -65,18 +65,31 @@ public class Game {
 		}
 		
 	}
+	
+	private boolean bet() {
+		System.out.println("How much would you like to bet?");
+		int betamount = inp.nextInt();
+		if (db.getPlayerCredit(player) >= betamount) {
+			db.updateCredits(player, db.getPlayerCredit(player)-betamount);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	public void gameStart() {
-
-		while (true) {			
-			gameLogic();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e){} 
-
-			System.out.println("\n[1]Continue\n[2]Exit");
+		while (true) {
+			int credits = db.getPlayerCredit(player);
+			System.out.println("You have " + credits + " credits.");
+			while (bet()) {
+				gameLogic();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e){} 
+			}
+			System.out.println("You dont have enough credits\n[1]Place new bet\n[2]Exit");
 			String choice = inp.next();
-
 			if (choice.equals("2")) {
 				System.out.println("Thanks for playing, se you again!");
 				break;
