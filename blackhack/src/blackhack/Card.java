@@ -7,6 +7,8 @@ public class Card {
 
 	private String suit;
 	private int rank;
+	
+	private boolean hidden;
 
 	public Card(String suit, int rank) {
 		this.suit = suit;
@@ -33,7 +35,19 @@ public class Card {
 			option = String.valueOf(getRank());
 			break;
 		}
-		return option +" of "+ suit;
+
+		if (hidden) return "***HIDDEN**";
+		else		return option +" of "+ suit;
+	}
+	
+	public boolean isHidden() {
+		return this.hidden;
+	}
+	public void unHide() {
+		this.hidden = false;
+	}
+	public void hide() {
+		this.hidden = true;
 	}
 
 	public int getRank() {

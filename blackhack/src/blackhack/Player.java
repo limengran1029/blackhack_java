@@ -10,10 +10,11 @@ public class Player {
 
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
+	/*
 	public int getDealerPoints() {
-		int sum = this.hand.get(0).getRank();
-		return sum;
+		return this.hand.get(1).getRank();
 	}
+	*/
 
 	public int getPoints(){
 			
@@ -22,11 +23,13 @@ public class Player {
 
 		for(int i = 0; i < this.hand.size(); i++){
 			Card c = this.hand.get(i);
-			if(c.getRank() >= 2 && c.getRank() <= 10){
-				sum += c.getRank();
-			}
-			else if(c.getRank() == 11){
-				numberofA ++;
+			if (!c.isHidden()) {
+				if(c.getRank() >= 2 && c.getRank() <= 10){
+					sum += c.getRank();
+				}
+				else if(c.getRank() == 11){
+					numberofA ++;
+				}
 			}
 		}
 
@@ -43,6 +46,10 @@ public class Player {
 
 	}
 
+	public Card getFirstCard() {
+		return hand.get(0);
+
+	}
 	public void setCredentials(String username, String password) {
 		this.username = username;
 		this.password = password;
