@@ -6,6 +6,7 @@ public class Player {
 	private String username;
 	private String password;
 	private int credits;
+	private int bet;
 
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
@@ -92,5 +93,13 @@ public class Player {
 
 	public void setCredits(int credits) {
 		this.credits = credits;
+	}
+
+	public int getBet() {
+		return bet;
+	}
+
+	public void setBet(int bet) {
+		this.bet = bet;
 	}
 }
