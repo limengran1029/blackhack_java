@@ -2,7 +2,7 @@ package blackhack;
 
 import java.util.ArrayList;
 
-public class Player {
+class Player {
 	private String username;
 	private String password;
 	private int credits;
@@ -16,7 +16,7 @@ public class Player {
 	}
 	*/
 
-	public int getPoints(){
+	 int getPoints(){
 			
 		int sum = 0;
 		int numberofA = 0;
@@ -50,36 +50,36 @@ public class Player {
 		
 	}
 
-	public Card getFirstCard() {
+	Card getFirstCard() {
 		return hand.get(0);
 
 	}
-	public void setCredentials(String username, String password) {
+	void setCredentials(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
 
-	public String getUsername() {
+	String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	void setUsername(String username) {
 		this.username = username;
 	}
 
-	public String getPassword() {
+	String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	void setPassword(String password) {
 		this.password = password;
 	}
 	
-	public ArrayList<Card> getHand() {
+	ArrayList<Card> getHand() {
 		return this.hand;
 	}
 
-	public String getHandText() {
+	String getHandText() {
 
 		StringBuilder builder = new StringBuilder();
 
@@ -90,27 +90,27 @@ public class Player {
 		return handText;
 	}
 	
-	public void setHand(ArrayList<Card> hand) {
+	void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
 	
-	public void addCardToHand(Card c) {
+	void addCardToHand(Card c) {
 		this.hand.add(c);
 	}
 
-	public int getCredits() {
+	int getCredits() {
 		return credits;
 	}
 
-	public void setCredits(int credits) {
+	void setCredits(int credits) {
 		this.credits = credits;
 	}
 
-	public int getBet() {
+	int getBet() {
 		return bet;
 	}
 
-	public void setBet(int bet) {
+	void setBet(int bet) {
 		this.bet = bet;
 	}
 }
