@@ -165,7 +165,6 @@ public class Game {
 
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
-		
 	}
 	
 	private void hitStandDoubleSplit() {
