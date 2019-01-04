@@ -18,7 +18,6 @@ public class Game {
 	
 	private void menuOptions(String option) {
 		
-		dealer.setUsername("Dealer");
 
 		Boolean menu = true;
 
@@ -111,24 +110,24 @@ public class Game {
 	public void gameStart() {
 		boolean isRunning = true;
 		while (isRunning) {
-			System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Exit");
+			System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Logout");
 			switch (inp.next()) {
-			case "1":
-				bet();
-				break;
-			case "2":
-				addCredits();
-				break;
-			case "3":
-				bjRules();
-				break;
-			case "4":
-				System.out.println("You have quit.");
-				isRunning = false;
-				break;
-			default:
-				System.out.println("Choose a correct alternative");
-				break;
+				case "1":
+					bet();
+					break;
+				case "2":
+					addCredits();
+					break;
+				case "3":
+					bjRules();
+					break;
+				case "4":
+					System.out.println("Logged out");
+					isRunning = false;
+					break;
+				default:
+					System.out.println("Choose a correct alternative");
+					break;
 			}
 		}
 	}
@@ -239,8 +238,10 @@ public class Game {
 
 		player.addCardToHand(d.drawCard());
 
-		while(dealer.getPoints() < 17)
-			hit(dealer);
+		if(player.getPoints() < 22) {
+			while(dealer.getPoints() < 17)
+				hit(dealer);
+		}
 	}
 	
 	private boolean checkWinLose() {
