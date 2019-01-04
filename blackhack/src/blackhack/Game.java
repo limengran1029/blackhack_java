@@ -1,15 +1,14 @@
 package blackhack;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Game {
-	Player player;
+	Player player, splitPlayer;
 	DBConnector db;
 	Scanner inp;
 	Player dealer = new Player();
 	Deck d = new Deck();
-	Player[] players;
-	int counter = 0;
 	
 	Game(Player p, Scanner inp, DBConnector db){
 		this.player = p;
@@ -153,11 +152,13 @@ class Game {
 
 		String choice = null;
 		Card c = d.drawCard();
+		
 		p.addCardToHand(c);
+
 		System.out.println(p.getUsername() + "Drew: " + c);
 
-		if (p == player && p.getPoints() < 22) {
-			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+		if (p.getUsername() != "Dealer" && p.getPoints() < 22) {
+			System.out.println("Your hand: " + p.getHandText() + " Total: " + p.getPoints());	
 			while(true) {
 				System.out.println("\n[1] Hit | "
 									+ "[2] Stand");
@@ -192,8 +193,15 @@ class Game {
 		}
 	}
 	private void playSplit() {
-		System.out.println("now it should split");
-		
+		Card tempCard = player.getHand().remove(0);
+
+		player.addHandtoHands(player.getHand());
+		ArrayList<Card> tempList = new ArrayList<Card>();
+
+		tempList.add(tempCard);
+		player.addHandtoHands(tempList);
+		tempList.clear();
+
 	}
 	
 	private boolean checkWinLose() {
@@ -202,6 +210,7 @@ class Game {
 
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+
 
 		if (player.getPoints() > 21) {
 			System.out.println("You bust!");

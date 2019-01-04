@@ -2,11 +2,13 @@ package blackhack;
 
 import java.util.ArrayList;
 
+
 class Player {
 	private String username;
 	private String password;
 	private int credits;
 	private int bet;
+	private ArrayList<ArrayList<Card>> hands = new ArrayList<ArrayList<Card>>();
 
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
@@ -112,5 +114,13 @@ class Player {
 
 	void setBet(int bet) {
 		this.bet = bet;
+	}
+
+	public ArrayList<ArrayList<Card>> getHands() {
+		return hands;
+	}
+
+	public void addHandtoHands(ArrayList<Card> arrayList) {
+		this.hands.add(arrayList);
 	}
 }
