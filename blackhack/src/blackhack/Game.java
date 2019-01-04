@@ -63,6 +63,7 @@ public class Game {
 		else if (option.equals("3"))
 		{
 			System.out.println("You're exiting the program..\nGoodbye and please come again!");
+			menu = false;
 		}
 		else
 		{
@@ -136,7 +137,6 @@ public class Game {
 
 
 		System.out.println("\nGame start!\n");
-
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e){} 
@@ -162,7 +162,6 @@ public class Game {
 		}
 		// hides dealers first card
 		dealer.getFirstCard().hide();
-
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 	}
