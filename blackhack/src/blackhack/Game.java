@@ -2,23 +2,74 @@ package blackhack;
 
 import java.util.Scanner;
 
-public class Game {
-	Scanner inp;
-	Player player;
-	DBConnector db;
+class Game {
+	Scanner inp = new Scanner(System.in);
+	Player player = new Player();
 	Player dealer = new Player();
 	Deck d = new Deck();
 	Player[] players;
-	boolean run = true;
+
+	final DBConnector db = new DBConnector();
+
+	void start() {
+		System.out.println("Welcome to Blackhack!\n[1]Login\n[2]Register\n[3]Exit");
+		menuOptions(inp.next());
+	}
 	
-	
-	public Game(Player p, Scanner inp, DBConnector db) {
-		this.player = p;
-		this.inp = inp;
-		this.db = db;
+	private void menuOptions(String option) {
+		
+
+		Boolean menu = true;
+
+		while(menu)
+			if (option.equals("1"))
+			{
+					System.out.println("Enter username: ");
+					String usr = inp.next();
+					System.out.println("Enter password: ");
+					String pw = inp.next();
+
+					player.setCredentials(usr, pw);				
+
+					if (db.login(player))
+					{
+						System.out.println("Welcome "+ player.getUsername()+"!");
+						menu = false;
+						gameStart();
+					}
+					else
+					{
+						System.out.println("Communications link failure");
+					}
+				}
+
+			else if (option.equals("2"))
+			{
+					System.out.println("Enter desired Username: ");
+					String usr = inp.next();
+					System.out.println("Enter desired Password: ");
+					String pw = inp.next();
+					player.setCredentials(usr, pw);				
+					if (db.registerPlayer(player)) {
+						System.out.println("You have successfully created your account!\n Account name: "+usr);
+						break;
+					}
+					else {
+						System.out.println("See error code");
+					}
+				
+		}
+		else if (option.equals("3"))
+		{
+			System.out.println("You're exiting the program..\nGoodbye and please come again!");
+			menu = false;
+		}
+		else
+		{
+			System.out.println("Please enter correct menu choice!");
+		}
 		
 	}
-
 	
 	private void bet() {
 		System.out.println("Your balance is: " + db.getPlayerCredit(player));
@@ -56,7 +107,7 @@ public class Game {
 	}
 	
 
-	public void gameStart() {
+	void gameStart() {
 		boolean isRunning = true;
 		while (isRunning) {
 			System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Logout");
@@ -72,7 +123,6 @@ public class Game {
 					break;
 				case "4":
 					System.out.println("Logged out");
-					run = false;
 					isRunning = false;
 					break;
 				default:

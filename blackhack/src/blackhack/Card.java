@@ -1,16 +1,16 @@
 package blackhack;
 
-public class Card {
+class Card {
 
-	public static final String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
-	public static final int[] RANKS = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+	static final String[] SUITS = {"Clubs", "Diamonds", "Hearts", "Spades"};
+	static final int[] RANKS = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
 	private String suit;
 	private int rank;
 	
 	private boolean hidden;
 
-	public Card(String suit, int rank) {
+	Card(String suit, int rank) {
 		this.suit = suit;
 		this.setRank(rank);
 	}
@@ -40,17 +40,17 @@ public class Card {
 		else		return option +" of "+ suit;
 	}
 	
-	public boolean isHidden() {
+	boolean isHidden() {
 		return this.hidden;
 	}
-	public void unHide() {
+	void unHide() {
 		this.hidden = false;
 	}
-	public void hide() {
+	void hide() {
 		this.hidden = true;
 	}
 
-	public int getRank() {
+	int getRank() {
 		if (this.rank == 14) {
 			rank = 11;
 		}
@@ -60,7 +60,7 @@ public class Card {
 		return rank;
 	}
 
-	public void setRank(int rank) {
+	void setRank(int rank) {
 		this.rank = rank;
 	}
 	
