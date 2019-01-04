@@ -9,6 +9,7 @@ class Game {
 	Player dealer = new Player();
 	Deck d = new Deck();
 	Player[] players;
+	int counter = 0;
 	
 	Game(Player p, Scanner inp, DBConnector db){
 		this.player = p;
@@ -58,27 +59,23 @@ class Game {
 	
 
 	void gameStart() {
-		boolean isRunning = true;
-		while (isRunning) {
-			System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Logout");
-			switch (inp.next()) {
-				case "1":
-					bet();
-					break;
-				case "2":
-					addCredits();
-					break;
-				case "3":
-					bjRules();
-					break;
-				case "4":
-					System.out.println("Logged out");
-					isRunning = false;
-					break;
-				default:
-					System.out.println("Choose a correct alternative");
-					break;
-			}
+		System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Exit");
+		switch (inp.next()) {
+		case "1":
+			bet();
+			break;
+		case "2":
+			addCredits();
+			break;
+		case "3":
+			bjRules();
+			break;
+		case "4":
+			System.out.println("Exited");
+			break;
+		default:
+			System.out.println("Choose a correct alternative");
+			break;
 		}
 	}
 	
@@ -115,46 +112,41 @@ class Game {
 	}
 	
 	private void hitStandDoubleSplit() {
-		boolean enableSplit = true;
+		boolean enableSplit = false;
+			
 		while (true) {
+
 			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
-							 + "[3] Double | ");
+							 + "[3] Double");
 			if(player.getHand().get(0).getRank() ==  player.getHand().get(1).getRank()) {
-				System.out.println("[4] Split");
+				System.out.println(" | [4] Split");
 				enableSplit = true;
-				
 			}
 
 			String choice = inp.next();
-			
-			switch (choice) {
-			case "1":
+
+			if (choice.equals("1")) {
 				hit(player);
-				break;
-			case "2":
+			}
+			else if(choice.equals("2")) {
 				while(dealer.getPoints() < 17)
 					hit(dealer);
-				break;
-			case "3":
+			}
+			else if(choice.equals("3")) {
 				playDouble();
-				break;
-			case "4":
-				if(enableSplit) {
-					playSplit();
-					break;
-				}
-			default:
+			}
+			else if(enableSplit && choice.equals("4")) {
+				playSplit();
+			}
+			else {
 				System.out.println("Not a valid option");
-				break;
 			}
 
-			// If there is a winner/loser break loop return to menu
 			boolean won = checkWinLose();
 			if(won)
 				break;
 		}
-		
 	}
 	
 	private void hit(Player p) {
