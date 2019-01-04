@@ -162,7 +162,7 @@ public class Game {
 		}
 		// hides dealers first card
 		dealer.getFirstCard().hide();
-		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());
+		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 	}
 	
@@ -195,31 +195,57 @@ public class Game {
 			}
 
 			// If there is a winner/loser break loop return to menu
-			if (checkWinLose()) {
+			boolean won = checkWinLose();
+			if(won)
 				break;
-			}
+
 		}
 		
 	}
 	
 	private void hit(Player p) {
+
+		String choice = null;
 		Card c = d.drawCard();
 		p.addCardToHand(c);
 		System.out.println(p.getUsername() + "Drew: " + c);
+
+		if (p == player && p.getPoints() < 22) {
+			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+			while(true) {
+				System.out.println("\n[1] Hit | "
+									+ "[2] Stand");
+				choice = inp.next();
+				if (choice.equals("1") || choice.equals("2"))
+					break;
+			}
+			
+			if(choice.equals("1")) {
+				hit(player);
+			}
+			else if (choice.equals("2")) {
+				while(dealer.getPoints() < 17)
+					hit(dealer);
+			}
+		}
 	}
 	
 	private void playDouble() {
-		//db.updateCredits(player, db.getPlayerCredit(player)-player.getBet());
+		
+		// remove double cash, and double bet. transfers happens in checkwin
+		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
+		player.setBet(player.getBet() * 2);
 
 		System.out.println("You choose to double, you get one card.");
 
-		hit(player);
+		player.addCardToHand(d.drawCard());
 
 		while(dealer.getPoints() < 17)
 			hit(dealer);
 	}
 	
 	private boolean checkWinLose() {
+
 		dealer.getFirstCard().unHide();
 
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());
@@ -237,12 +263,16 @@ public class Game {
 		}
 		else if (player.getPoints() == dealer.getPoints()) {
 			System.out.println("It's a tie");
-			db.updateCredits(player, player.getCredits() + player.getBet());
+			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet()));
 			return true;
 		}
 		else if (player.getPoints() > dealer.getPoints()) {
-			db.updateCredits(player, player.getCredits() + (player.getBet() * 2));
+			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
 			System.out.println("You won!");
+			return true;
+		}
+		else if(dealer.getPoints() > player.getPoints()) {
+			System.out.println("You lost!");
 			return true;
 		}
 		else {

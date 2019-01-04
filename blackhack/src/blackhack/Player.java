@@ -23,13 +23,11 @@ public class Player {
 
 		for(int i = 0; i < this.hand.size(); i++){
 			Card c = this.hand.get(i);
-			if (!c.isHidden()) {
-				if(c.getRank() >= 2 && c.getRank() <= 10){
-					sum += c.getRank();
-				}
-				else if(c.getRank() == 11){
-					numberofA ++;
-				}
+			if(c.getRank() >= 2 && c.getRank() <= 10){
+				sum += c.getRank();
+			}
+			else if(c.getRank() == 11){
+				numberofA ++;
 			}
 		}
 
@@ -44,6 +42,12 @@ public class Player {
 		
 		return sum;
 
+	}
+	
+	int getDealerPoints() {
+
+		return this.hand.get(1).getRank();
+		
 	}
 
 	public Card getFirstCard() {
