@@ -198,7 +198,6 @@ public class Game {
 			boolean won = checkWinLose();
 			if(won)
 				break;
-
 		}
 		
 	}
