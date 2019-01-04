@@ -58,6 +58,7 @@ public class Game {
 		else if (option.equals("3"))
 		{
 			System.out.println("You're exiting the program..\nGoodbye and please come again!");
+			menu = false;
 		}
 		else
 		{
@@ -127,17 +128,13 @@ public class Game {
 		}
 	}
 	
-	private void gameLogic() {		
-
+	private void gameLogic() {
 		Deck d = new Deck();
-
 		System.out.println("\nGame start!");
 		boolean hitStand = true;
-
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e){} 
-
 		// Draw 2 cards for players
 		for (int i = 0; i < 2; i++) {
 			dealer.addCardToHand(d.drawCard());
@@ -154,12 +151,9 @@ public class Game {
 		}
 		else {
 			while (hitStand){
-
 				System.out.println("Hit, Stand or Double? (h/s/d) ");
 				String choice = inp.next();
-
 				if (choice.toLowerCase().equals("h")) {
-
 					player.addCardToHand(d.drawCard());
 					System.out.println("Dealer: " + dealer.getHand().get(0) + " Total: " + dealer.getDealerPoints());
 					System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
