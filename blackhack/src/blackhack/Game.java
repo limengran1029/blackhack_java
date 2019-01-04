@@ -69,23 +69,36 @@ public class Game {
 	private void bet() {
 		System.out.println("Your balance is: " + db.getPlayerCredit(player));
 		System.out.println("How much would you like to bet?");
-		int betamount = inp.nextInt();
-		if (db.getPlayerCredit(player) >= betamount) {
-			db.updateCredits(player, db.getPlayerCredit(player)-betamount);
-			player.setBet(betamount);
-			gameLogic();
-		}
-		else {
-			gameStart();
+		String betamount = inp.next();
+		try {
+			int betam = Integer.parseInt(betamount);
+			if (db.getPlayerCredit(player) >= betam) {
+				db.updateCredits(player, db.getPlayerCredit(player)-betam);
+				player.setBet(betam);
+				gameLogic();
+			}
+			else {
+				System.out.println("Insufficient credits, please add some before playing!");
+				gameStart();
+			}			
+		} catch (Exception e) {
+			System.out.println("Invalid input!");
 		}
 	}
 	
 	private void addCredits() {
+		System.out.println("You have: " +db.getPlayerCredit(player)+ " credits.");
 		System.out.println("How much would you like to add?");
-		int credits = inp.nextInt();
-		db.updateCredits(player, db.getPlayerCredit(player)+credits);
-		System.out.println("You have successfully added " + credits + " to your account.");
-		System.out.println("Your new balance is: " + db.getPlayerCredit(player));
+		String credits = inp.next();
+		try {
+			int creds = Integer.parseInt(credits);
+			db.updateCredits(player, db.getPlayerCredit(player)+creds);
+			System.out.println("You have successfully added " + creds + " to your account.");
+			System.out.println("Your new balance is: " + db.getPlayerCredit(player));			
+		} catch (Exception e) {
+			System.out.println("Invalid input!");
+		}
+
 	}
 	
 
@@ -119,7 +132,6 @@ public class Game {
 		Deck d = new Deck();
 
 		System.out.println("\nGame start!");
-		//boolean game = true;
 		boolean hitStand = true;
 
 		try {
@@ -175,9 +187,18 @@ public class Game {
 					db.updateCredits(player, db.getPlayerCredit(player)-player.getBet());
 					player.addCardToHand(d.drawCard());
 					System.out.println("Your hand: " + player.getHandText()+ " total: " + player.getPoints());
-					doDealerBust(d);
-					calcPoints(d, "d");
+					if (player.getPoints() >21) {
+						System.out.println("You bust");
+					}
+					else {
+						doDealerBust(d);
+						calcPoints(d, "d");
+					}
 					hitStand = false;
+					
+					printResult(player, dealer);
+					dealer.getHand().clear();
+					player.getHand().clear();
 				}
 				else {
 					System.out.println("Enter a valid option");
@@ -186,7 +207,7 @@ public class Game {
 		}
 	}
 	
-	private void calcPoints(Deck d, String s) {
+	private void calcPoints(Deck d, String s) {		
 		if (dealer.getPoints() > 21 || player.getPoints() > dealer.getPoints()) {
 			System.out.println("You won!");
 			if (s.toLowerCase().equals("s"))
