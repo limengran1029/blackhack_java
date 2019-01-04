@@ -3,13 +3,19 @@ package blackhack;
 import java.util.Scanner;
 
 class Game {
-	Scanner inp = new Scanner(System.in);
-	Player player = new Player();
+	Player player;
+	DBConnector db;
+	Scanner inp;
 	Player dealer = new Player();
 	Deck d = new Deck();
 	Player[] players;
-
-	final DBConnector db = new DBConnector();
+	
+	Game(Player p, Scanner inp, DBConnector db){
+		this.player = p;
+		this.inp = inp;
+		this.db = db;
+		
+	}
 
 	void start() {
 		System.out.println("Welcome to Blackhack!\n[1]Login\n[2]Register\n[3]Exit");
