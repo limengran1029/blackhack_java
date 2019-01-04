@@ -26,8 +26,7 @@ public class DBConnector {
 	
 	public boolean registerPlayer(Player p) {
 
-		try {
-			Statement s = connect.createStatement();
+		try (Statement s = connect.createStatement();){			
 			ResultSet r = s.executeQuery("Select * from blackhack where username = '"+p.getUsername()+"'");
 
 			if (r.absolute(1) == true) {
@@ -47,9 +46,7 @@ public class DBConnector {
 	
 	public boolean login(Player p) {
 
-		try {
-
-			Statement s = connect.createStatement();
+		try (Statement s = connect.createStatement();){
 			ResultSet r = s.executeQuery("Select username, password from blackhack where username = '"+p.getUsername()+"' and password = '"+p.getPassword()+"'");
 
 			if (r.absolute(1) == true) 
@@ -72,31 +69,22 @@ public class DBConnector {
 	public int getPlayerCredit(Player p) {
 		int credits = 0;
 
-		try 
-		{
-			Statement s = connect.createStatement();
+		try(Statement s = connect.createStatement();) {
 			ResultSet r = s.executeQuery("Select credits from blackhack where username = '"+p.getUsername()+"'");
-
 			while(r.next())
-				credits = r.getInt("credits");
-			
+				credits = r.getInt("credits");			
 		} 
-
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-		}
-	
+		}	
 		return credits;
 	}
 	
 	public void updateCredits(Player p, int cred) {
 
-		try 
-		{
-			Statement s = connect.createStatement();
-			s.executeUpdate("Update blackhack set credits = '"+cred+"' where username = '"+p.getUsername()+"'");
-			
+		try (Statement s = connect.createStatement();){
+			s.executeUpdate("Update blackhack set credits = '"+cred+"' where username = '"+p.getUsername()+"'");	
 		} 
 		catch (SQLException e) 
 		{

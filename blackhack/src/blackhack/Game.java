@@ -76,7 +76,7 @@ public class Game {
 			gameLogic();
 		}
 		else {
-			System.out.println("Please add your credit!");
+			System.out.println("Insufficient credits, please add some before playing!");
 			gameStart();
 		}
 	}
