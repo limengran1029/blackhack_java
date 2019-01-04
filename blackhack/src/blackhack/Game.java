@@ -14,80 +14,23 @@ class Game {
 		this.player = p;
 		this.inp = inp;
 		this.db = db;
-		
+		this.dealer.setUsername("Dealer");
 	}
 
-	void start() {
-		System.out.println("Welcome to Blackhack!\n[1]Login\n[2]Register\n[3]Exit");
-		menuOptions(inp.next());
-	}
-	
-	private void menuOptions(String option) {
-		
-
-		Boolean menu = true;
-
-		while(menu)
-			if (option.equals("1"))
-			{
-					System.out.println("Enter username: ");
-					String usr = inp.next();
-					System.out.println("Enter password: ");
-					String pw = inp.next();
-
-					player.setCredentials(usr, pw);				
-
-					if (db.login(player))
-					{
-						System.out.println("Welcome "+ player.getUsername()+"!");
-						menu = false;
-						gameStart();
-					}
-					else
-					{
-						System.out.println("Communications link failure");
-					}
-				}
-
-			else if (option.equals("2"))
-			{
-					System.out.println("Enter desired Username: ");
-					String usr = inp.next();
-					System.out.println("Enter desired Password: ");
-					String pw = inp.next();
-					player.setCredentials(usr, pw);				
-					if (db.registerPlayer(player)) {
-						System.out.println("You have successfully created your account!\n Account name: "+usr);
-						break;
-					}
-					else {
-						System.out.println("See error code");
-					}
-				
-		}
-		else if (option.equals("3"))
-		{
-			System.out.println("You're exiting the program..\nGoodbye and please come again!");
-			menu = false;
-		}
-		else
-		{
-			System.out.println("Please enter correct menu choice!");
-		}
-		
-	}
-	
 	private void bet() {
 		System.out.println("Your balance is: " + db.getPlayerCredit(player));
 		System.out.println("How much would you like to bet?");
 		String betamount = inp.next();
+
 		try {
 			int betam = Integer.parseInt(betamount);
+
 			if (db.getPlayerCredit(player) >= betam) {
 				db.updateCredits(player, db.getPlayerCredit(player)-betam);
 				player.setBet(betam);
 				gameLogic();
 			}
+
 			else {
 				System.out.println("Insufficient credits, please add some before playing!");
 				gameStart();
@@ -101,6 +44,7 @@ class Game {
 		System.out.println("You have: " +db.getPlayerCredit(player)+ " credits.");
 		System.out.println("How much would you like to add?");
 		String credits = inp.next();
+
 		try {
 			int creds = Integer.parseInt(credits);
 			db.updateCredits(player, db.getPlayerCredit(player)+creds);
@@ -140,7 +84,6 @@ class Game {
 	
 	private void gameLogic() {		
 
-
 		System.out.println("\nGame start!\n");
 		try {
 			Thread.sleep(1500);
@@ -172,12 +115,16 @@ class Game {
 	}
 	
 	private void hitStandDoubleSplit() {
-		//boolean doubleRound = false;
+		boolean enableSplit = true;
 		while (true) {
-			System.out.println("\n[1] Hit | "
+			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
-							 + "[3] Double | "
-							 + "[4] Split\n");
+							 + "[3] Double | ");
+			if(player.getHand().get(0).getRank() ==  player.getHand().get(1).getRank()) {
+				System.out.println("[4] Split");
+				enableSplit = true;
+				
+			}
 
 			String choice = inp.next();
 			
@@ -193,7 +140,10 @@ class Game {
 				playDouble();
 				break;
 			case "4":
-				break;
+				if(enableSplit) {
+					playSplit();
+					break;
+				}
 			default:
 				System.out.println("Not a valid option");
 				break;
@@ -249,6 +199,10 @@ class Game {
 				hit(dealer);
 		}
 	}
+	private void playSplit() {
+		System.out.println("now it should split");
+		
+	}
 	
 	private boolean checkWinLose() {
 
@@ -264,7 +218,7 @@ class Game {
 		else if (dealer.getPoints() > 21) {
 			System.out.println("Dealer busts");
 			System.out.println("You win!!!!");
-			db.updateCredits(player, player.getCredits() + (player.getBet() * 2));
+			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
 			return true;
 		}
 		else if (player.getPoints() == dealer.getPoints()) {
@@ -286,17 +240,6 @@ class Game {
 		}
 	}
 
-	/*
-	private void printResult(Player p, Player d) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e){} 
-		System.out.println("\nFinal results: ");
-		System.out.println("Dealer score: "+d.getPoints());
-		System.out.println("Your score: "+p.getPoints());
-	}
-	*/
-	
 	private void bjRules() {
 		System.out.println("Black Jack Rules:\n"+
 				"In black Jack the goal is to hit 21 or get as close to as possible\n"+
