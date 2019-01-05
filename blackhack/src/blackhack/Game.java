@@ -125,7 +125,7 @@ class Game {
 			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
 							 + "[3] Double");
-			if(player.getHand().get(0).getRank() ==  player.getHand().get(1).getRank()) {
+			if(player.getHand().get(0).getValue() ==  player.getHand().get(1).getValue()) {
 				System.out.println(" | [4] Split");
 				enableSplit = true;
 			}

@@ -49,15 +49,23 @@ class Card {
 	void hide() {
 		this.hidden = true;
 	}
-
+	
 	int getRank() {
+		return rank;
+	}
+
+	int getValue() {
+		int value;
 		if (this.rank == 14) {
-			rank = 11;
+			value = 11;
 		}
 		else if (10< this.rank && this.rank < 14) {
-			rank = 10;
+			value = 10;
 		}
-		return rank;
+		else {
+			value = this.rank;
+		}
+		return value;
 	}
 
 	void setRank(int rank) {
