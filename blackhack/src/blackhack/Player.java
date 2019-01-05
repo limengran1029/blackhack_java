@@ -13,43 +13,59 @@ class Player {
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	/*
-	public int getDealerPoints() {
-		return this.hand.get(1).getRank();
-	}
-	*/
-
-	 int getPoints(){
-			
+	int getPoints(){
 		int sum = 0;
 		int numberofA = 0;
 
-		for(int i = 0; i < this.hand.size(); i++){
+		for(int i = 0; i < this.hand.size(); i++) {
 			Card c = this.hand.get(i);
-			if(c.getRank() >= 2 && c.getRank() <= 10){
+			if(c.getRank() >= 2 && c.getRank() <= 10) {
 				sum += c.getRank();
 			}
 			else if(c.getRank() == 11){
 				numberofA ++;
 			}
 		}
-
-		if(numberofA != 0){
-			if(sum + (numberofA*11) > 21){
+ 
+		if(numberofA != 0) {
+			if(sum + (numberofA*11) > 21) {
 				sum += numberofA;
 			}
-			else{
-				sum += 11;
+			else {
+				 sum += 11;
 			}
 		}
-		
 		return sum;
-
 	}
+	*/
 	
-	int getDealerPoints() {
-
-		return this.hand.get(1).getRank();
+	int getPoints() {
+		int sum = 0;
+		int numberofA = 0;
 		
+		for(int i = 0; i < this.hand.size(); i++) {
+			Card c = this.hand.get(i);
+			if(c.getRank() >= 2 && c.getRank() <= 10) {
+				sum += c.getRank();
+			}
+			else if(c.getRank() == 11){
+				numberofA ++;
+			}
+		}
+ 
+		if(numberofA != 0) {
+			if(sum + (numberofA*11) > 21) {
+				sum += numberofA;
+			}
+			else {
+				 sum += 11;
+			}
+		}
+		return sum;
+	}
+
+	int getDealerPoints() {
+		return this.hand.get(1).getRank();
 	}
 
 	Card getFirstCard() {
@@ -85,7 +101,7 @@ class Player {
 
 		StringBuilder builder = new StringBuilder();
 
-		for (Card c: hand) {
+		for (Card c: this.hand) {
 			builder.append(c + ", ");
 		}
 		String handText = builder.toString();
@@ -97,6 +113,10 @@ class Player {
 	}
 	
 	void addCardToHand(Card c) {
+		this.hand.add(c);
+	}
+
+	void addCardToCurrentHand(Card c) {
 		this.hand.add(c);
 	}
 
@@ -116,11 +136,11 @@ class Player {
 		this.bet = bet;
 	}
 
-	public ArrayList<ArrayList<Card>> getHands() {
+	ArrayList<ArrayList<Card>> getHands() {
 		return hands;
 	}
 
-	public void addHandtoHands(ArrayList<Card> arrayList) {
+	void addHandtoHands(ArrayList<Card> arrayList) {
 		this.hands.add(arrayList);
 	}
 }

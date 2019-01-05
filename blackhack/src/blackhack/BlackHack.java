@@ -11,7 +11,6 @@ public class BlackHack {
 		System.out.println("Welcome to Blackhack!\n[1]Login\n[2]Register\n[3]Exit");
 		String option = inp.next();
 		
-
 		while(true) {
 			if (option.equals("1")) {
 				login();
