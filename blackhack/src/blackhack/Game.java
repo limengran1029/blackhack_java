@@ -155,17 +155,13 @@ class Game {
 	}
 	
 	private void hit(Player p) {
-		Card c = d.drawCard();
-		
-		p.addCardToHand(c);
-
 		String choice = null;
+		Card c = d.drawCard();
+		p.addCardToHand(c);
+		System.out.println(p.getUsername() + "Drew: " + c);
 
-		if (p.getUsername() != "Dealer" && p.getPoints() < 22) {
-
-			System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
+		if (p == player && p.getPoints() < 22) {
 			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
-
 			while(true) {
 				System.out.println("\n[1] Hit | "
 									+ "[2] Stand");
@@ -182,8 +178,8 @@ class Game {
 					hit(dealer);
 			}
 		}
-		System.out.println(p.getUsername() + "\nDrew: " + c);
 	}
+
 	
 	private void playDouble() {
 		
@@ -202,7 +198,7 @@ class Game {
 	}
 	private void playSplit(Player p) {
 
-		boolean finnished = false;
+		//boolean finnished = false;
 
 		// First split
 		ArrayList<Card> tempHand = new ArrayList<Card>();
@@ -211,7 +207,6 @@ class Game {
 		if (p.getHands().size() == 0) {
 			// remove first card in first hand
 			Card tempCard = p.getHand().remove(0);
-			System.out.println(tempCard);
 			tempHand.add(tempCard);
 			// add that hand with first card to hands
 			p.addHandtoHands(tempHand);
