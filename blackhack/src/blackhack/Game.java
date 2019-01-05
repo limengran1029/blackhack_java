@@ -44,14 +44,16 @@ class Game {
 		System.out.println("You have: " +db.getPlayerCredit(player)+ " credits.");
 		System.out.println("How much would you like to add?");
 		String credits = inp.next();
-
+		
 		try {
 			int creds = Integer.parseInt(credits);
 			db.updateCredits(player, db.getPlayerCredit(player)+creds);
 			System.out.println("You have successfully added " + creds + " to your account.");
-			System.out.println("Your new balance is: " + db.getPlayerCredit(player));			
+			System.out.println("Your new balance is: " + db.getPlayerCredit(player));	
+			gameStart();
 		} catch (Exception e) {
 			System.out.println("Invalid input!");
+			addCredits();
 		}
 
 	}
