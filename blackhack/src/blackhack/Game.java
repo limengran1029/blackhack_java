@@ -18,7 +18,6 @@ class Game {
 	}
 
 	private void bet() {
-		System.out.println("Your balance is: " + db.getPlayerCredit(player));
 		System.out.println("How much would you like to bet?");
 		String betamount = inp.next();
 
@@ -37,6 +36,7 @@ class Game {
 			}			
 		} catch (Exception e) {
 			System.out.println("Invalid input!");
+			bet();
 		}
 	}
 	
@@ -63,6 +63,7 @@ class Game {
 		System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Exit");
 		switch (inp.next()) {
 		case "1":
+			System.out.println("Your balance is: " + db.getPlayerCredit(player));
 			bet();
 			break;
 		case "2":
