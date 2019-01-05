@@ -51,13 +51,21 @@ class Card {
 	}
 
 	int getRank() {
-		if (this.rank == 14) {
-			rank = 11;
-		}
-		else if (10< this.rank && this.rank < 14) {
-			rank = 10;
-		}
 		return rank;
+	}
+
+	public int newRank( ) {
+		int newrank;
+		if (rank == 14) {
+			newrank = 11;
+		}
+		else if (10< rank && rank < 14) {
+			newrank = 10;
+		}
+		else {
+			newrank = rank;
+		}
+		return newrank;
 	}
 
 	void setRank(int rank) {

@@ -18,10 +18,10 @@ class Player {
 		
 		for(int i = 0; i < this.hand.size(); i++) {
 			Card c = this.hand.get(i);
-			if(c.getRank() >= 2 && c.getRank() <= 10) {
-				sum += c.getRank();
+			if(c.newRank() >= 2 && c.newRank() <= 10) {
+				sum += c.newRank();
 			}
-			else if(c.getRank() == 11){
+			else if(c.newRank() == 11){
 				numberofA ++;
 			}
 		}

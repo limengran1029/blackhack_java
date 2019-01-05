@@ -36,7 +36,7 @@ class Game {
 			}			
 		} catch (Exception e) {
 			System.out.println("Invalid input!");
-			bet();
+			//bet();
 		}
 	}
 	
@@ -104,6 +104,7 @@ class Game {
 		// Clear hands
 		player.getHand().clear();
 		dealer.getHand().clear();
+		player.getHands().clear();
 		
 		// Deal two cards
 		for (int i = 0; i < 2; i++) {
@@ -112,6 +113,9 @@ class Game {
 		}
 		// hides dealers first card
 		dealer.getFirstCard().hide();
+		
+		// insert first hand into handlist
+		player.addHandtoHands(player.getHand());
 
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
@@ -144,20 +148,28 @@ class Game {
 			}
 			else if(enableSplit && choice.equals("4")) {
 				playSplit(player);
+				hit(player);
 			}
 			else {
 				System.out.println("Not a valid option");
 			}
 
-			if(!enableSplit) {
-				boolean finnished = checkWinLose();
-				if(finnished)
-					break;
-			}
-			else {
+			System.out.println("Player hands:"  + player.getHands().size());
+			checkWinLose();
+			if(player.getHands().size() == 0) {
 				break;
 			}
+			else {
+				player.setHand(player.getHands().remove(0));
+
+				System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
+				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+			}
 		}
+
+		dealer.getFirstCard().unHide();
+		printHands(player, dealer);
+		System.out.println("Good bye!! :>");
 	}
 	
 	private void hit(Player p) {
@@ -206,63 +218,54 @@ class Game {
 		//temp array for splitting cards
 		ArrayList<Card> tempHand = new ArrayList<Card>();
 
-		// if not split has occured earlier
-		if (p.getHands().size() == 0) {
-			// remove first card in first hand
-			Card tempCard = p.getHand().remove(0);
-			tempHand.add(tempCard);
-			// add that hand with first card to hands
-			p.addHandtoHands(tempHand);
-			// add first hand to the list
-			p.addHandtoHands(p.getHand());
-		}
+		// remove first card in first hand
+		Card tempCard = p.getHand().remove(0);
+		tempHand.add(tempCard);
+		// add that hand with first card to hands
+		p.addHandtoHands(tempHand);
+		// add first hand to the list
+		p.addHandtoHands(p.getHand());
+	}
 		
-		// Goes through the list of hands and plays each hand
+		/*
 		for(ArrayList<Card> hand : p.getHands()) {
 
 			p.setHand(hand);
 
 			hit(player);
 			
-			checkWinLose();
+			//checkWinLose();
 		}
 		// split game done
 		// clear hands
-		p.getHands().clear();
-	}
+		 */
 
-	private boolean checkWinLose(){
-		dealer.getFirstCard().unHide();
+	private void checkWinLose(){
+		//dealer.getFirstCard().unHide();
 
-		printHands(player, dealer);
+		//printHands(player, dealer);
+		//boolean finnished = false;
 
 		if (player.getPoints() > 21) {
 			System.out.println("You bust!");
-			return true;
 		}
 		else if (dealer.getPoints() > 21) {
 			System.out.println("Dealer busts");
 			System.out.println("You win!!!!");
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
-			return true;
 		}
 		else if (player.getPoints() == dealer.getPoints()) {
 			System.out.println("It's a tie");
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet()));
-			return true;
 		}
 		else if (player.getPoints() > dealer.getPoints()) {
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
 			System.out.println("You won!");
-			return true;
 		}
 		else if(dealer.getPoints() > player.getPoints()) {
 			System.out.println("You lost!");
-			return true;
 		}
-		else {
-			return false;
-		}
+		player.getHands().remove(0);
 	}
 	
 	private void printHands(Player p, Player d) {
