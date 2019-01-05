@@ -230,32 +230,18 @@ class Game {
 			Card c = d.drawCard();
 			p.addCardToCurrentHand(c);
 
-			if (p.getUsername() != "Dealer" && p.getPoints() < 22) {
+			while(true) {
 
-				System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getPoints());	
-				System.out.println("Your hand: " + p.getHandText() + " Total: " + p.getPoints());	
-
-				while(true) {
-					System.out.println("\n[1] Hit | "
-										+ "[2] Stand");
-					choice = inp.next();
-					if (choice.equals("1") || choice.equals("2"))
-						break;
-				}
+				hit(player);
 				
-				if(choice.equals("1")) {
-					hit(player);
+				finnished = checkWinLose();
+
+				if (finnished) {
+					System.out.println("finnished hand, betting on the next hand!");
 				}
-				else if (choice.equals("2")) {
-					while(dealer.getPoints() < 17)
-						hit(dealer);
+				else {
+					break;
 				}
-			}
-			System.out.println(p.getUsername() + "\nDrew: " + c);
-			
-			finnished = checkWinLose();
-			if (finnished) {
-				System.out.println("finnished hand, betting on the next hand!");
 			}
 		}
 	}
