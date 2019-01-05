@@ -223,6 +223,7 @@ class Game {
 			// removes current hand from split list
 			p.getHands().remove(hand);
 
+			// draw first card
 			Card c = d.drawCard();
 			p.addCardToCurrentHand(c);
 
