@@ -244,6 +244,9 @@ class Game {
 				}
 			}
 		}
+		// split game done
+		// clear hand
+		p.getHands().clear();
 	}
 
 	private boolean checkWinLose(){
