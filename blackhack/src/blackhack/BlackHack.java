@@ -25,6 +25,7 @@ public class BlackHack {
 			}
 			else {
 				System.out.println("Please enter correct menu choice!");
+				break;
 				}
 		}
 	}
