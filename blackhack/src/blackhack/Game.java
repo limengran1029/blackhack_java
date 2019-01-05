@@ -93,7 +93,7 @@ class Game {
 			System.out.println("Congratulations you won");
 			db.updateCredits(player, db.getPlayerCredit(player) + player.getBet() * 2);
 		}
-		else Deal();
+		else deal();
 
 		// Round is over
 		System.out.println("See you next time!\n");
@@ -117,7 +117,7 @@ class Game {
 		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 	}
 	
-	private void Deal() {
+	private void deal() {
 		boolean enableSplit = false;
 			
 		while (true) {
@@ -154,6 +154,9 @@ class Game {
 				if(finnished)
 					break;
 			}
+			else {
+				break;
+			}
 		}
 	}
 	
@@ -161,7 +164,7 @@ class Game {
 		String choice = null;
 		Card c = d.drawCard();
 		p.addCardToHand(c);
-		System.out.println(p.getUsername() + "Drew: " + c);
+		System.out.println(p.getUsername() + " Drew: " + c);
 
 		if (p == player && p.getPoints() < 22) {
 			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
@@ -200,10 +203,7 @@ class Game {
 		}
 	}
 	private void playSplit(Player p) {
-
-		//boolean finnished = false;
-
-		// First split
+		//temp array for splitting cards
 		ArrayList<Card> tempHand = new ArrayList<Card>();
 
 		// if not split has occured earlier
@@ -217,26 +217,21 @@ class Game {
 			p.addHandtoHands(p.getHand());
 		}
 		
+		// Goes through the list of hands and plays each hand
 		for(ArrayList<Card> hand : p.getHands()) {
 
-			System.out.println(hand);
-			// get the first hand and make it current hand
 			p.setHand(hand);
-			// removes current hand from split list
-			p.getHands().remove(hand);
 
 			hit(player);
 			
 			checkWinLose();
 		}
 		// split game done
-		// clear hand
+		// clear hands
 		p.getHands().clear();
 	}
 
 	private boolean checkWinLose(){
-
-
 		dealer.getFirstCard().unHide();
 
 		printHands(player, dealer);
