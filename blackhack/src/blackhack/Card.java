@@ -49,10 +49,11 @@ class Card {
 	void hide() {
 		this.hidden = true;
 	}
-
 	int getRank() {
 		return rank;
 	}
+
+
 
 	public int newRank( ) {
 		int newrank;
