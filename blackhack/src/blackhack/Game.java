@@ -146,9 +146,11 @@ class Game {
 				System.out.println("Not a valid option");
 			}
 
-			boolean won = checkWinLose(enableSplit);
-			if(won)
-				break;
+			if(!enableSplit) {
+				boolean finnished = checkWinLose();
+				if(finnished)
+					break;
+			}
 		}
 	}
 	
@@ -199,6 +201,7 @@ class Game {
 	}
 	private void playSplit(Player p) {
 
+		boolean finnished = false;
 		String choice = null;
 		// First split
 		ArrayList<Card> tempHand = new ArrayList<Card>();
@@ -249,10 +252,15 @@ class Game {
 				}
 			}
 			System.out.println(p.getUsername() + "\nDrew: " + c);
+			
+			finnished = checkWinLose();
+			if (finnished) {
+				System.out.println("finnished hand, betting on the next hand!");
+			}
 		}
 	}
 
-	private boolean checkWinLose(boolean enableSplit){
+	private boolean checkWinLose(){
 
 
 		dealer.getFirstCard().unHide();
