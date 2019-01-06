@@ -1,6 +1,7 @@
 package blackhack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Deck {
 	private ArrayList<Card> deck;
@@ -16,7 +17,7 @@ public class Deck {
 			}
 		}
 		
-		//Collections.shuffle(deck);
+		Collections.shuffle(deck);
 	}
 
 	Card drawCard() {

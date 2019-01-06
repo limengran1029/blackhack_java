@@ -17,68 +17,79 @@ class Game {
 		this.dealer.setUsername("Dealer");
 	}
 
-	private void bet() {
+	private boolean bet() {
 		System.out.println("How much would you like to bet?");
-		String betamount = inp.next();
+		int betam = 0;
 
-		try {
-			int betam = Integer.parseInt(betamount);
-
-			if (db.getPlayerCredit(player) >= betam) {
-				db.updateCredits(player, db.getPlayerCredit(player)-betam);
-				player.setBet(betam);
-				gameLogic();
+		while (true) {
+			try {
+				String betamount = inp.next();
+				betam = Integer.parseInt(betamount);
+				break;
+			} catch (Exception e) {
+				System.out.println("Invalid input!");
 			}
-
-			else {
-				System.out.println("Insufficient credits, please add some before playing!");
-				gameStart();
-			}			
-		} catch (Exception e) {
-			System.out.println("Invalid input!");
-			//bet();
 		}
+
+		if (db.getPlayerCredit(player) >= betam) {
+			db.updateCredits(player, db.getPlayerCredit(player)-betam);
+			player.setBet(betam);
+			return true;
+		}
+
+		else {
+			System.out.println("Insufficient credits, please add some before playing!");
+			return false;
+		}			
 	}
 	
-	private void addCredits() {
+	private boolean addCredits() {
 		System.out.println("You have: " +db.getPlayerCredit(player)+ " credits.");
 		System.out.println("How much would you like to add?");
 		String credits = inp.next();
 		
-		try {
-			int creds = Integer.parseInt(credits);
-			db.updateCredits(player, db.getPlayerCredit(player)+creds);
-			System.out.println("You have successfully added " + creds + " to your account.");
-			System.out.println("Your new balance is: " + db.getPlayerCredit(player));	
-			gameStart();
-		} catch (Exception e) {
-			System.out.println("Invalid input!");
-			addCredits();
+		while (true) {
+			try {
+				int creds = Integer.parseInt(credits);
+				db.updateCredits(player, db.getPlayerCredit(player)+creds);
+				System.out.println("You have successfully added " + creds + " to your account.");
+				System.out.println("Your new balance is: " + db.getPlayerCredit(player));	
+				return true;
+			} catch (Exception e) {
+				System.out.println("Invalid input!");
+			}
 		}
 
 	}
 	
 
 	void gameStart() {
-		System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Exit");
-		switch (inp.next()) {
-		case "1":
-			System.out.println("Your balance is: " + db.getPlayerCredit(player));
-			bet();
-			break;
-		case "2":
-			addCredits();
-			break;
-		case "3":
-			bjRules();
-			break;
-		case "4":
-			System.out.println("Exited");
-			break;
-		default:
-			System.out.println("Choose a correct alternative");
-			break;
+		gameStart: while (true) {
+			System.out.println("[1] Play BlackJack\n[2] Add credits\n[3] Read rules\n[4] Exit");
+			switch (inp.next()) {
+			case "1":
+				System.out.println("Your balance is: " + db.getPlayerCredit(player));
+				boolean betAccept = bet();
+				if (betAccept) {
+					break gameStart;
+				}
+				break;
+			case "2":
+				addCredits();
+				break;
+			case "3":
+				bjRules();
+				break;
+			case "4":
+				System.out.println("Exited");
+				System.exit(0);
+				break;
+			default:
+				System.out.println("Choose a correct alternative");
+				break;
+			}
 		}
+	gameLogic();
 	}
 	
 	private void gameLogic() {		
@@ -88,7 +99,7 @@ class Game {
 			Thread.sleep(1500);
 		} catch (InterruptedException e){} 
 		
-		firstDeal(d);
+		firstDeal();
 		if (player.getPoints() == 21) {
 			System.out.println("Congratulations you won");
 			db.updateCredits(player, db.getPlayerCredit(player) + player.getBet() * 2);
@@ -100,7 +111,7 @@ class Game {
 		gameStart();
 	}
 
-	private void firstDeal(Deck d) {
+	private void firstDeal() {
 		// Clear hands
 		player.getHand().clear();
 		dealer.getHand().clear();
@@ -123,9 +134,11 @@ class Game {
 	
 	private void deal() {
 		boolean enableSplit = false;
+		int count = 0;
 			
 		while (true) {
 
+			System.out.println(d.getDeck().size());
 			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
 							 + "[3] Double");
@@ -150,12 +163,19 @@ class Game {
 				playSplit(player);
 				hit(player);
 			}
+			else if(choice.equals("5")) {
+				for (Card c: d.getDeck()) {
+					count++;
+					System.out.print(count + ": ");
+					System.out.println(c);
+				}
+			}
 			else {
 				System.out.println("Not a valid option");
 			}
 
-			System.out.println("Player hands:"  + player.getHands().size());
 			checkWinLose();
+
 			if(player.getHands().size() == 0) {
 				break;
 			}
@@ -176,9 +196,9 @@ class Game {
 		String choice = null;
 		Card c = d.drawCard();
 		p.addCardToHand(c);
-		System.out.println(p.getUsername() + " Drew: " + c);
+		System.out.println("\n" + p.getUsername() + " Drew: " + c + "\n");
 
-		if (p == player && p.getPoints() < 22) {
+		if (p == player && p.getPoints() < 21) {
 			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 			while(true) {
 				System.out.println("\n[1] Hit | "
@@ -247,23 +267,23 @@ class Game {
 		//boolean finnished = false;
 
 		if (player.getPoints() > 21) {
-			System.out.println("You bust!");
+			System.out.println("\nYou bust!");
 		}
 		else if (dealer.getPoints() > 21) {
-			System.out.println("Dealer busts");
-			System.out.println("You win!!!!");
+			System.out.println("\nDealer busts");
+			System.out.println("\nYou win!!!!");
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
 		}
 		else if (player.getPoints() == dealer.getPoints()) {
-			System.out.println("It's a tie");
+			System.out.println("\nIt's a tie");
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet()));
 		}
 		else if (player.getPoints() > dealer.getPoints()) {
 			db.updateCredits(player, db.getPlayerCredit(player) + (player.getBet() * 2));
-			System.out.println("You won!");
+			System.out.println("\nYou won!");
 		}
 		else if(dealer.getPoints() > player.getPoints()) {
-			System.out.println("You lost!");
+			System.out.println("\nYou lost!");
 		}
 		player.getHands().remove(0);
 	}
