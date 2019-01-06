@@ -183,10 +183,16 @@ class Game {
 			while(dealer.getPoints() < 17)
 				hit(dealer);
 		}
-		else if(choice.equals("3")) {
+		else if(choice.equals("3") && db.getPlayerCredit(player) >= player.getBet()) {
 			enableSplit = false;
 			doubleBet();
 			hit(player);
+		}
+		else if (choice.equals("3") && db.getPlayerCredit(player) < player.getBet()){
+			System.out.println("You dont have enough money to double.");			
+		}
+		else if(enableSplit && choice.equals("4") && db.getPlayerCredit(player) < player.getBet()) {
+			System.out.println("You dont have enough money to split.");
 		}
 		else if(enableSplit && choice.equals("4")) {
 			splitHand(player);
@@ -225,6 +231,8 @@ class Game {
 					winLoseSplit();
 			}
 		}
+
+
 		else {
 			System.out.println("Not a valid option");
 		}
