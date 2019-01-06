@@ -42,7 +42,8 @@ public class BlackHack {
 			game.gameStart();
 		}
 		else {
-			System.out.println("Incorrect username!");
+			System.out.println("Incorrect username and/or password!");
+			login();
 		}
 	}
 	
