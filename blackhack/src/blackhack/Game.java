@@ -156,7 +156,7 @@ class Game {
 			}
 
 			String choice = inp.next();
-
+			
 			if (choice.equals("1")) {
 				enableSplit = false;
 				hit(player);
@@ -183,17 +183,19 @@ class Game {
 						System.out.println("Invalid input!");
 					}
 				}
-
+				break;
 			}
 			else if(choice.equals("2")) {
 				enableSplit = false;
 				while(dealer.getPoints() < 17)
 					hit(dealer);
+				break;
 			}
 			else if(choice.equals("3") && db.getPlayerCredit(player) >= player.getBet()) {
 				enableSplit = false;
 				doubleBet();
 				hit(player);
+				break;
 			}
 			else if (choice.equals("3") && db.getPlayerCredit(player) < player.getBet()){
 				System.out.println("You dont have enough money to double.");
@@ -239,13 +241,15 @@ class Game {
 						}
 					}
 						winLoseSplit();
+						
 				}
+				break;
 			}
 
 			else {
 				System.out.println("Not a valid option");
 			}
-			break;
+
 		}
 		// we do check win lose on one hand at a time 
 		// when running split. so we disable it here
