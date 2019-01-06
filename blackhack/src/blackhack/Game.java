@@ -231,13 +231,12 @@ class Game {
 
 		// we do check win lose on one hand at a time 
 		// when running split. so we disable it here
-		if(!enableSplit)
-			checkWinLose();
 		if (!enableSplit) {
 			if(player.getPoints() < 21) {
 				while(dealer.getPoints() < 17)
 					hit(dealer);
 			}
+			checkWinLose();
 			dealer.getFirstCard().unHide();
 			printHands(player, dealer);
 		}
