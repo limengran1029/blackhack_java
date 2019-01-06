@@ -134,11 +134,9 @@ class Game {
 	
 	private void deal() {
 		boolean enableSplit = false;
-		int count = 0;
 			
 		while (true) {
 
-			System.out.println(d.getDeck().size());
 			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
 							 + "[3] Double");
@@ -163,13 +161,6 @@ class Game {
 				playSplit(player);
 				hit(player);
 			}
-			else if(choice.equals("5")) {
-				for (Card c: d.getDeck()) {
-					count++;
-					System.out.print(count + ": ");
-					System.out.println(c);
-				}
-			}
 			else {
 				System.out.println("Not a valid option");
 			}
@@ -180,7 +171,8 @@ class Game {
 				break;
 			}
 			else {
-				player.setHand(player.getHands().remove(0));
+				player.setHand(player.getHands().get(0));
+				//player.setHand(player.getHands().remove(0));
 
 				System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
 				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
@@ -245,8 +237,6 @@ class Game {
 		p.addHandtoHands(tempHand);
 		// add first hand to the list
 		p.addHandtoHands(p.getHand());
-	}
-		
 		/*
 		for(ArrayList<Card> hand : p.getHands()) {
 
@@ -259,6 +249,9 @@ class Game {
 		// split game done
 		// clear hands
 		 */
+
+	}
+		
 
 	private void checkWinLose(){
 		//dealer.getFirstCard().unHide();
@@ -285,6 +278,7 @@ class Game {
 		else if(dealer.getPoints() > player.getPoints()) {
 			System.out.println("\nYou lost!");
 		}
+
 		player.getHands().remove(0);
 	}
 	
