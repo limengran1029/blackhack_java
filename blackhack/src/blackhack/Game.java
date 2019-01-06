@@ -189,7 +189,7 @@ class Game {
 			hit(player);
 		}
 		else if (choice.equals("3") && db.getPlayerCredit(player) < player.getBet()){
-			System.out.println("You dont have enough money to double.");			
+			System.out.println("You dont have enough money to double.");
 		}
 		else if(enableSplit && choice.equals("4") && db.getPlayerCredit(player) < player.getBet()) {
 			System.out.println("You dont have enough money to split.");
@@ -265,6 +265,10 @@ class Game {
 	}
 
 	private void splitHand(Player p) {
+		// doubles the bet and removes from account
+		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
+		// if you win now, your bet have doubled and you recieve double amount
+		player.setBet(player.getBet() * 2);
 		//temp array for splitting cards
 		p.getHands().clear();
 		ArrayList<Card> tempHand = new ArrayList<Card>();
