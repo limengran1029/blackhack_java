@@ -185,12 +185,9 @@ class Game {
 				hit(dealer);
 		}
 		else if(choice.equals("3")) {
+			enableSplit = false;
 			doubleBet();
 			hit(player);
-			if(player.getPoints() > 21) {
-				while(dealer.getPoints() < 17)
-					hit(dealer);
-			}
 		}
 		else if(enableSplit && choice.equals("4")) {
 			splitHand(player);
@@ -238,8 +235,9 @@ class Game {
 		if(!enableSplit)
 			checkWinLose();
 		if (!enableSplit) {
-			while(dealer.getPoints() < 17) {
-				hit(dealer);
+			if(player.getPoints() < 22) {
+				while(dealer.getPoints() < 17)
+					hit(dealer);
 			}
 			dealer.getFirstCard().unHide();
 			printHands(player, dealer);
