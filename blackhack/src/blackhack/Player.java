@@ -15,6 +15,7 @@ class Player {
 	int getPoints() {
 		int sum = 0;
 		int numberofA = 0;
+		int counter = 0;
 		
 		for(int i = 0; i < this.hand.size(); i++) {
 			Card c = this.hand.get(i);
@@ -23,15 +24,20 @@ class Player {
 			}
 			else if(c.newRank() == 11){
 				numberofA ++;
+				counter ++;
 			}
 		}
- 
+		
 		if(numberofA != 0) {
-			if(sum + (numberofA*11) > 21) {
-				sum += numberofA;
-			}
-			else {
-				 sum += 11;
+			for (int i = 0; i < counter; i++) {
+				if(sum + (numberofA*11) > 21) {
+					sum += 1;
+					numberofA--;
+				}
+				else {
+					 sum += 11;
+				}
+				
 			}
 		}
 		return sum;

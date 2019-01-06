@@ -129,7 +129,13 @@ class Game {
 		player.addHandtoHands(player.getHand());
 
 		System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
-		System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+		if (player.getHand().get(0).getRank() == 14 || player.getHand().get(1).getRank() == 14 && player.getPoints() < 22) {
+			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints() + "/" + (player.getPoints()-10));
+		}
+		else {
+			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
+		}
+		
 	}
 	
 	private void deal() {
@@ -140,7 +146,7 @@ class Game {
 			System.out.print("\n[1] Hit | "
 							 + "[2] Stand | "
 							 + "[3] Double");
-			if(player.getHand().get(0).getRank() ==  player.getHand().get(1).getRank()) {
+			if(player.getHand().get(0).newRank() ==  player.getHand().get(1).newRank()) {
 				System.out.println(" | [4] Split");
 				enableSplit = true;
 			}
@@ -175,7 +181,8 @@ class Game {
 				//player.setHand(player.getHands().remove(0));
 
 				System.out.println("Dealer: " + dealer.getHandText() + " Total: " + dealer.getDealerPoints());
-				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
+				
 			}
 		}
 
@@ -284,7 +291,8 @@ class Game {
 	
 	private void printHands(Player p, Player d) {
 		System.out.println("Dealer: " + d.getHandText() + " Total: " + d.getPoints());
-		System.out.println("Your hand: " + p.getHandText() + " Total: " + p.getPoints());	
+		System.out.println("Your hand: " + p.getHandText() + " Total: " + p.getPoints());
+		
 	}
 
 	private void bjRules() {
