@@ -233,7 +233,7 @@ class Game {
 		if(!enableSplit)
 			checkWinLose();
 		if (!enableSplit) {
-			if(player.getPoints() < 22) {
+			if(player.getPoints() < 21) {
 				while(dealer.getPoints() < 17)
 					hit(dealer);
 			}
