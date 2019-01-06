@@ -139,97 +139,102 @@ class Game {
 			System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());
 		}
 	}
-	
+
 	private void deal() {
 		boolean enableSplit = false;
-		while (true) {
-			System.out.print("\n[1] Hit | "
-							 + "[2] Stand | "
-							 + "[3] Double");
-			if(player.getHand().get(0).newRank() ==  player.getHand().get(1).newRank()) {
-				System.out.println(" | [4] Split");
-				enableSplit = true;
-			}
-			else {
-				System.out.print("\n");
+		System.out.print("\n[1] Hit | "
+						 + "[2] Stand | "
+						 + "[3] Double");
+		if(player.getHand().get(0).newRank() ==  player.getHand().get(1).newRank()) {
+			System.out.println(" | [4] Split");
+			enableSplit = true;
+		}
+		else {
+			System.out.print("\n");
+		}
+
+		String choice = inp.next();
+
+		if (choice.equals("1")) {
+			enableSplit = false;
+			hit(player);
+
+			while(player.getPoints() < 21) {
+				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+				System.out.println("\n[1] Hit | "
+									+ "[2] Stand");
+				choice = inp.next();
+				
+				if(choice.equals("1")) {
+					hit(player);
+				}
+				else if (choice.equals("2")) {
+					while(dealer.getPoints() < 17) {
+						hit(dealer);
+					}
+
+					break;
+				}
 			}
 
-			String choice = inp.next();
+		}
+		else if(choice.equals("2")) {
+			enableSplit = false;
+			while(dealer.getPoints() < 17)
+				hit(dealer);
+		}
+		else if(choice.equals("3") && db.getPlayerCredit(player) >= player.getBet()) {
+			enableSplit = false;
+			doubleBet();
+			hit(player);
+		}
+		else if (choice.equals("3") && db.getPlayerCredit(player) < player.getBet()){
+			System.out.println("You dont have enough money to double.");
+		}
+		else if(enableSplit && choice.equals("4") && db.getPlayerCredit(player) < player.getBet()) {
+			System.out.println("You dont have enough money to split.");
+		}
+		else if(enableSplit && choice.equals("4")) {
+			splitHand(player);
+			for(ArrayList<Card> hand: player.getHands()) {
+				//set hand to current hand
+				player.setHand(hand);
 
-			if (choice.equals("1")) {
-				enableSplit = false;
 				hit(player);
-
+				if (player.getPoints() == 21) {
+					System.out.println("You got Blackjack!");
+				}
+				
 				while(player.getPoints() < 21) {
-					System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
+					if (player.getHands().get(1).size() > 1) {
+						System.out.println("Your second hand: " + player.getHandText() + " Total: " + player.getPoints());	
+					}
+					else {
+						System.out.println("Your first hand: " + player.getHandText() + " Total: " + player.getPoints());	
+					}
+
 					System.out.println("\n[1] Hit | "
 										+ "[2] Stand");
 					choice = inp.next();
-					
 					if(choice.equals("1")) {
 						hit(player);
 					}
 					else if (choice.equals("2")) {
-						while(dealer.getPoints() < 17) {
-							hit(dealer);
+						if (player.getHands().get(1).size() > 1) {
+							while(dealer.getPoints() < 17) {
+								hit(dealer);
 						}
-
+						}
 						break;
 					}
 				}
+					winLoseSplit();
+			}
+		}
 
-			}
-			else if(choice.equals("2")) {
-				enableSplit = false;
-				while(dealer.getPoints() < 17)
-					hit(dealer);
-			}
-			else if(choice.equals("3")) {
-				enableSplit = false;
-				doubleBet();
-				hit(player);
-			}
-			else if(enableSplit && choice.equals("4")) {
-				splitHand(player);
-				for(ArrayList<Card> hand: player.getHands()) {
-					//set hand to current hand
-					player.setHand(hand);
 
-					hit(player);
-					if (player.getPoints() == 21) {
-						System.out.println("You got Blackjack!");
-					}
-					
-					while(player.getPoints() < 21) {
-						if (player.getHands().get(1).size() > 1) {
-							System.out.println("Your second hand: " + player.getHandText() + " Total: " + player.getPoints());	
-						}
-						else {
-							System.out.println("Your first hand: " + player.getHandText() + " Total: " + player.getPoints());	
-						}
-
-						System.out.println("\n[1] Hit | "
-											+ "[2] Stand");
-						choice = inp.next();
-						if(choice.equals("1")) {
-							hit(player);
-						}
-						else if (choice.equals("2")) {
-							if (player.getHands().get(1).size() > 1) {
-								while(dealer.getPoints() < 17) {
-									hit(dealer);
-							}
-							}
-							break;
-						}
-					}
-						winLoseSplit();
-				}
-			}
-			else {
-				System.out.println("Not a valid option");
-			}
-			break;
+		else {
+			System.out.println("Not a valid option");
 		}
 
 		// we do check win lose on one hand at a time 
@@ -244,34 +249,8 @@ class Game {
 			printHands(player, dealer);
 		}
 	}
-	
-	private void hit(Player p) {
-		Card c = d.drawCard();
-		p.addCardToHand(c);
-		System.out.println(p.getUsername() + " Drew: " + c + "\n");
-	}
-	
-	private void doubleBet() {
-		// doubles the bet and removes from account
-		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
-		// if you win now, your bet have doubled and you recieve double amount
-		player.setBet(player.getBet() * 2);
-		System.out.println("You choose to double, you get one card.");
-	}
 
-	private void splitHand(Player p) {
-		//temp array for splitting cards
-		p.getHands().clear();
-		ArrayList<Card> tempHand = new ArrayList<Card>();
-
-		// remove first card in first hand and ands it to temp hand
-		Card tempCard = p.getHand().remove(0);
-		tempHand.add(tempCard);
-		// add that hand with first card to hands
-		p.addHandtoHands(tempHand);
-		// add first hand to the list
-		p.addHandtoHands(p.getHand());
-	}
+	
 	
 	private void winLoseSplit() {
 		if (player.getHands().get(1).size() > 1) {
@@ -317,6 +296,36 @@ class Game {
 		}
 
 	}
+
+	private void hit(Player p) {
+		Card c = d.drawCard();
+		p.addCardToHand(c);
+		System.out.println(p.getUsername() + " Drew: " + c + "\n");
+	}	
+	
+	private void doubleBet() {
+		// doubles the bet and removes from account
+		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
+		// if you win now, your bet have doubled and you recieve double amount
+		player.setBet(player.getBet() * 2);
+		System.out.println("You choose to double, you get one card.");
+	}
+
+	private void splitHand(Player p) {
+		// doubles the bet and removes from account
+		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
+		//temp array for splitting cards
+		p.getHands().clear();
+		ArrayList<Card> tempHand = new ArrayList<Card>();
+
+		// remove first card in first hand and ands it to temp hand
+		Card tempCard = p.getHand().remove(0);
+		tempHand.add(tempCard);
+		// add that hand with first card to hands
+		p.addHandtoHands(tempHand);
+		// add first hand to the list
+		p.addHandtoHands(p.getHand());
+		}
 	
 	private void printHands(Player p, Player d) {
 		System.out.println("Dealer: " + d.getHandText() + " Total: " + d.getPoints());
