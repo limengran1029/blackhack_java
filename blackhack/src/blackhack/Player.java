@@ -38,7 +38,7 @@ class Player {
 	}
 
 	int getDealerPoints() {
-		return this.hand.get(1).getRank();
+		return this.hand.get(1).newRank();
 	}
 
 	Card getFirstCard() {
