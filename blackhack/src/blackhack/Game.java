@@ -236,10 +236,9 @@ class Game {
 				while(dealer.getPoints() < 17)
 					hit(dealer);
 			}
-		if(!enableSplit)
 			checkWinLose();
-		dealer.getFirstCard().unHide();
-		printHands(player, dealer);
+			dealer.getFirstCard().unHide();
+			printHands(player, dealer);
 		}
 	}
 	
