@@ -267,8 +267,6 @@ class Game {
 	private void splitHand(Player p) {
 		// doubles the bet and removes from account
 		db.updateCredits(player, db.getPlayerCredit(player) - player.getBet());
-		// if you win now, your bet have doubled and you recieve double amount
-		player.setBet(player.getBet() * 2);
 		//temp array for splitting cards
 		p.getHands().clear();
 		ArrayList<Card> tempHand = new ArrayList<Card>();
