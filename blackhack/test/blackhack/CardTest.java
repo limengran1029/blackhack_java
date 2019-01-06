@@ -25,9 +25,9 @@ public class CardTest {
 	@Test
 	public void testgetRank() {
         Card card1 = new Card("Clubs", 14);
-		assertEquals(card1.getValue(), 11);
+		assertEquals(card1.newRank(), 11);
         Card card2 = new Card("Clubs", 12);
-		assertEquals(card2.getValue(), 10);
+		assertEquals(card2.newRank(), 10);
 	}
 
 }
