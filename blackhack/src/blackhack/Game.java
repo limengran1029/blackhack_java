@@ -121,10 +121,8 @@ class Game {
 		// Deal two cards
 		for (int i = 0; i < 2; i++) {
 			dealer.addCardToHand(d.drawCard());
-			//player.addCardToHand(d.drawCard());
+			player.addCardToHand(d.drawCard());
 		}
-		player.addCardToHand(new Card("Diamonds", 10));
-		player.addCardToHand(new Card("Spades", 10));
 
 		// hides dealers first card
 		dealer.getFirstCard().hide();
@@ -208,7 +206,7 @@ class Game {
 						System.out.println("Your first hand: " + player.getHandText() + " Total: " + player.getPoints());	
 					}
 
-					System.out.print("\n[1] Hit | "
+					System.out.println("\n[1] Hit | "
 										+ "[2] Stand");
 					choice = inp.next();
 					if(choice.equals("1")) {
