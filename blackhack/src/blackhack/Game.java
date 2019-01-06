@@ -162,6 +162,7 @@ class Game {
 				hit(player);
 
 				while(player.getPoints() < 21) {
+						
 					System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 					System.out.println("\n[1] Hit | "
 										+ "[2] Stand");
@@ -170,12 +171,16 @@ class Game {
 					if(choice.equals("1")) {
 						hit(player);
 					}
+
 					else if (choice.equals("2")) {
 						while(dealer.getPoints() < 17) {
 							hit(dealer);
 						}
 
 						break;
+					}
+					else {
+						System.out.println("Invalid input!");
 					}
 				}
 
@@ -228,6 +233,9 @@ class Game {
 							}
 							}
 							break;
+						}
+						else {
+							System.out.println("Invalid input!");
 						}
 					}
 						winLoseSplit();
