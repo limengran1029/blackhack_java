@@ -58,6 +58,7 @@ class Game {
 				return true;
 			} catch (Exception e) {
 				System.out.println("Invalid input!");
+				return false;
 			}
 		}
 
