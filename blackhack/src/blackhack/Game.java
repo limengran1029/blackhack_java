@@ -142,91 +142,94 @@ class Game {
 	
 	private void deal() {
 		boolean enableSplit = false;
-		System.out.print("\n[1] Hit | "
-						 + "[2] Stand | "
-						 + "[3] Double");
-		if(player.getHand().get(0).newRank() ==  player.getHand().get(1).newRank()) {
-			System.out.println(" | [4] Split");
-			enableSplit = true;
-		}
-		else {
-			System.out.print("\n");
-		}
-
-		String choice = inp.next();
-
-		if (choice.equals("1")) {
-			enableSplit = false;
-			hit(player);
-
-			while(player.getPoints() < 21) {
-				System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
-				System.out.println("\n[1] Hit | "
-									+ "[2] Stand");
-				choice = inp.next();
-				
-				if(choice.equals("1")) {
-					hit(player);
-				}
-				else if (choice.equals("2")) {
-					while(dealer.getPoints() < 17) {
-						hit(dealer);
-					}
-
-					break;
-				}
+		while (true) {
+			System.out.print("\n[1] Hit | "
+							 + "[2] Stand | "
+							 + "[3] Double");
+			if(player.getHand().get(0).newRank() ==  player.getHand().get(1).newRank()) {
+				System.out.println(" | [4] Split");
+				enableSplit = true;
+			}
+			else {
+				System.out.print("\n");
 			}
 
-		}
-		else if(choice.equals("2")) {
-			enableSplit = false;
-			while(dealer.getPoints() < 17)
-				hit(dealer);
-		}
-		else if(choice.equals("3")) {
-			enableSplit = false;
-			doubleBet();
-			hit(player);
-		}
-		else if(enableSplit && choice.equals("4")) {
-			splitHand(player);
-			for(ArrayList<Card> hand: player.getHands()) {
-				//set hand to current hand
-				player.setHand(hand);
+			String choice = inp.next();
 
+			if (choice.equals("1")) {
+				enableSplit = false;
 				hit(player);
-				if (player.getPoints() == 21) {
-					System.out.println("You got Blackjack!");
-				}
-				
-				while(player.getPoints() < 21) {
-					if (player.getHands().get(1).size() > 1) {
-						System.out.println("Your second hand: " + player.getHandText() + " Total: " + player.getPoints());	
-					}
-					else {
-						System.out.println("Your first hand: " + player.getHandText() + " Total: " + player.getPoints());	
-					}
 
+				while(player.getPoints() < 21) {
+					System.out.println("Your hand: " + player.getHandText() + " Total: " + player.getPoints());	
 					System.out.println("\n[1] Hit | "
 										+ "[2] Stand");
 					choice = inp.next();
+					
 					if(choice.equals("1")) {
 						hit(player);
 					}
 					else if (choice.equals("2")) {
-						if (player.getHands().get(1).size() > 1) {
-							while(dealer.getPoints() < 17) {
-								hit(dealer);
+						while(dealer.getPoints() < 17) {
+							hit(dealer);
 						}
-						}
+
 						break;
 					}
 				}
-					winLoseSplit();
+
 			}
-		}
-		else {
-			System.out.println("Not a valid option");
+			else if(choice.equals("2")) {
+				enableSplit = false;
+				while(dealer.getPoints() < 17)
+					hit(dealer);
+			}
+			else if(choice.equals("3")) {
+				enableSplit = false;
+				doubleBet();
+				hit(player);
+			}
+			else if(enableSplit && choice.equals("4")) {
+				splitHand(player);
+				for(ArrayList<Card> hand: player.getHands()) {
+					//set hand to current hand
+					player.setHand(hand);
+
+					hit(player);
+					if (player.getPoints() == 21) {
+						System.out.println("You got Blackjack!");
+					}
+					
+					while(player.getPoints() < 21) {
+						if (player.getHands().get(1).size() > 1) {
+							System.out.println("Your second hand: " + player.getHandText() + " Total: " + player.getPoints());	
+						}
+						else {
+							System.out.println("Your first hand: " + player.getHandText() + " Total: " + player.getPoints());	
+						}
+
+						System.out.println("\n[1] Hit | "
+											+ "[2] Stand");
+						choice = inp.next();
+						if(choice.equals("1")) {
+							hit(player);
+						}
+						else if (choice.equals("2")) {
+							if (player.getHands().get(1).size() > 1) {
+								while(dealer.getPoints() < 17) {
+									hit(dealer);
+							}
+							}
+							break;
+						}
+					}
+						winLoseSplit();
+				}
+			}
+			else {
+				System.out.println("Not a valid option");
+			}
+			break;
 		}
 
 		// we do check win lose on one hand at a time 
